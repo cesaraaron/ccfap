@@ -1,11 +1,57 @@
-import LeftPanel from "./Components/Leftpanel"
+import { useState, useCallback } from "react"
+import LeftPanel from "./Components/leftpanel"
 import RightPanel from "./Components/rightpanel"
 
-function App() {
+const App = () => {
+  const [leftPanelWidth, setLeftPanelWidth] = useState(50) // Initial width percentage of left panel
+
+  const handleMouseMove = useCallback((event) => {
+    const newWidth = (event.clientX / window.innerWidth) * 100 // Calculate new width percentage
+    setLeftPanelWidth(newWidth) // Update the left panel width
+  }, [])
+
+  const handleMouseUp = useCallback(() => {
+    window.removeEventListener("mousemove", handleMouseMove) // Remove the event listener on mouse up
+    window.removeEventListener("mouseup", handleMouseUp)
+  }, [handleMouseMove])
+
+  const handleMouseDown = useCallback(() => {
+    window.addEventListener("mousemove", handleMouseMove) // Add event listeners on mouse down
+    window.addEventListener("mouseup", handleMouseUp)
+  }, [handleMouseMove, handleMouseUp])
+
   return (
-    <div>
-      <LeftPanel />
-      <RightPanel />
+    <div className="flex h-screen">
+      {/* Left Panel */}
+      <div
+        style={{ width: `${leftPanelWidth}%` }}
+        className="overflow-y-auto border-r border-gray-300"
+      >
+        <div className="p-4">
+          <h2 className="text-xl text-center p-4">Movimientos</h2>
+          <LeftPanel />
+        </div>
+      </div>
+
+      {/* Draggable Divider */}
+      <div
+        className="w-1 cursor-col-resize"
+        onMouseDown={handleMouseDown}
+        style={{ cursor: "col-resize", zIndex: 10 }}
+      />
+
+      {/* Right Panel */}
+      <div
+        style={{ width: `${100 - leftPanelWidth}%` }}
+        className="overflow-y-auto"
+      >
+        <div className="p-4">
+          <h2 className="text-xl text-center p-4">Visualizador</h2>
+          <div className="overflow-y-auto">
+            <RightPanel />
+          </div>
+        </div>
+      </div>
     </div>
   )
 }
