@@ -1,9 +1,14 @@
 import { useState, useCallback } from "react"
-import LeftPanel from "./Components/leftpanel"
-import RightPanel from "./Components/rightpanel"
+import Movimientos from "./Components/movimientos"
+import Visualizador from "./Components/visualizador"
+
+const data = {
+  depositos: [],
+}
 
 const App = () => {
   const [leftPanelWidth, setLeftPanelWidth] = useState(50) // Initial width percentage of left panel
+  const [appData, setAppData] = useState(data)
 
   const handleMouseMove = useCallback((event) => {
     const newWidth = (event.clientX / window.innerWidth) * 100 // Calculate new width percentage
@@ -29,7 +34,7 @@ const App = () => {
       >
         <div className="p-4">
           <h2 className="text-xl text-center p-4">Movimientos</h2>
-          <LeftPanel />
+          <Movimientos appData={appData} setAppData={setAppData} />
         </div>
       </div>
 
@@ -48,7 +53,7 @@ const App = () => {
         <div className="p-4">
           <h2 className="text-xl text-center p-4">Visualizador</h2>
           <div className="overflow-y-auto">
-            <RightPanel />
+            <Visualizador />
           </div>
         </div>
       </div>

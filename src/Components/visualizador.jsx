@@ -1,33 +1,27 @@
 const RightPanel = () => {
   return (
-    <div>
-      <div role="tablist" className="tabs tabs-lifted">
+    <div className="flex justify-center items-center">
+      <div role="tablist" className="tabs tabs-bordered">
         <input
           type="radio"
-          name="rightpanel"
+          name="my_tabs_1"
           role="tab"
           className="tab"
           aria-label="Llenado"
+          defaultChecked
         />
-        <div
-          role="tabpanel"
-          className="tab-content bg-base-100 border-base-300 rounded-box p-6"
-        >
+        <div role="tabpanel" className="tab-content p-10">
           Tab content 1
         </div>
 
         <input
           type="radio"
-          name="rightpanel"
+          name="my_tabs_1"
           role="tab"
           className="tab"
           aria-label="Visualizador"
-          defaultChecked
         />
-        <div
-          role="tabpanel"
-          className="tab-content bg-base-100 border-base-300 rounded-box p-6"
-        >
+        <div role="tabpanel" className="tab-content p-10">
           Tab content 2
         </div>
       </div>

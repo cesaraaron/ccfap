@@ -1,6 +1,6 @@
-import { HotTable } from "@handsontable/react"
+import Depositos from "./depositos"
 
-const LeftPanel = () => {
+const LeftPanel = (props) => {
   return (
     <div>
       <div role="tablist" className="tabs tabs-lifted">
@@ -17,17 +17,7 @@ const LeftPanel = () => {
           className="tab-content bg-base-100 border-base-300 rounded-box p-6"
         >
           <div className="flex">
-            <div className="">
-              <HotTable
-                data={[[1, 2, 3]]}
-                colHeaders={["Column 1", "Column 2", "Column 3"]}
-                contextMenu={true}
-                height={"25vh"}
-                width={"40vw"}
-                manualColumnResize={true}
-                licenseKey="non-commercial-and-evaluation"
-              />
-            </div>
+            <Depositos {...props} />
           </div>
         </div>
 
