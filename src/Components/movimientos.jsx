@@ -2,36 +2,28 @@ import Depositos from "./depositos"
 
 const LeftPanel = (props) => {
   return (
-    <div>
-      <div role="tablist" className="tabs tabs-lifted">
+    <div className="flex ">
+      <div role="tablist" className="tabs tabs-bordered w-full">
         <input
           type="radio"
-          name="leftpanel"
+          name="movimientos_tabs"
           role="tab"
           className="tab"
           aria-label="Depositos"
           defaultChecked
         />
-        <div
-          role="tabpanel"
-          className="tab-content bg-base-100 border-base-300 rounded-box p-6"
-        >
-          <div className="flex">
-            <Depositos {...props} />
-          </div>
+        <div role="tabpanel" className="tab-content p-2">
+          <Depositos {...props} />
         </div>
 
         <input
           type="radio"
-          name="leftpanel"
+          name="movimientos_tabs"
           role="tab"
           className="tab"
           aria-label="Liquidaciones"
         />
-        <div
-          role="tabpanel"
-          className="tab-content bg-base-100 border-base-300 rounded-box p-6"
-        >
+        <div role="tabpanel" className="tab-content p-10">
           Tab content 2
         </div>
       </div>
