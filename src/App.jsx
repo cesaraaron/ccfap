@@ -1,10 +1,7 @@
 import { useState, useCallback } from "react"
 import Movimientos from "./Components/movimientos"
 import Visualizador from "./Components/visualizador"
-
-const data = {
-  depositos: [],
-}
+import { data } from "./Utils/dataShape"
 
 const App = () => {
   const [leftPanelWidth, setLeftPanelWidth] = useState(50) // Initial width percentage of left panel

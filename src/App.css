@@ -1,3 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.ag-theme-quartz {
+  --ag-font-size: 11px;
+}

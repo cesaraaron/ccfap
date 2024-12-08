@@ -3,7 +3,7 @@ import Depositos from "./depositos"
 const LeftPanel = (props) => {
   return (
     <div className="flex ">
-      <div role="tablist" className="tabs tabs-bordered w-full">
+      <div role="tablist" className="tabs tabs-lifted w-full">
         <input
           type="radio"
           name="movimientos_tabs"
@@ -21,7 +21,7 @@ const LeftPanel = (props) => {
           name="movimientos_tabs"
           role="tab"
           className="tab"
-          aria-label="Liquidaciones"
+          aria-label="Cambios de CXC"
         />
         <div role="tabpanel" className="tab-content p-10">
           Tab content 2
