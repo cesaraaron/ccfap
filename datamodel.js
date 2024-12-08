@@ -1671,3 +1671,23 @@ export const bancos = {
 }
 
 export const depositos = ["CXP Farmacias", "CXP Otros", "Prestamo Bodega"]
+
+export const salidas = ["CXC Otros", "CXC Bodega", "CXC Farmacias"]
+
+export const cxc = [
+  "CXC Otros",
+  "CXC Bodega",
+  "CXC Empleados",
+  "CXC Farmacias",
+  "CXC Retenciones",
+]
+
+export const cxp = [
+  "CXP Otros",
+  "CXP Proveedores",
+  "CXP Farmacias",
+  "CXP Bodega",
+  "Balance IVA",
+  "CXP Retenciones",
+  "Prestamo Bodega",
+]

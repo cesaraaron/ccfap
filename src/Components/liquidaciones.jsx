@@ -1,18 +1,18 @@
 import { AgGridReact } from "ag-grid-react" // React Data Grid Component
 import "ag-grid-enterprise"
-import { auxiliares, bancos, depositos } from "../../datamodel"
+import { bancos } from "../../datamodel"
 import { useMemo, useState } from "react"
 import PropTypes from "prop-types"
 import { dataTypeDefinitions } from "../Utils/dataTypeDefs"
 
-Depositos.propTypes = {
+Liquidaciones.propTypes = {
   appData: PropTypes.shape({
-    depositos: PropTypes.array.isRequired,
+    liquidaciones: PropTypes.array.isRequired,
   }).isRequired,
   setAppData: PropTypes.func.isRequired,
 }
 
-export default function Depositos({ appData, setAppData }) {
+export default function Liquidaciones({ appData, setAppData }) {
   const cellSelection = useMemo(() => {
     return {
       handle: {
@@ -24,36 +24,9 @@ export default function Depositos({ appData, setAppData }) {
   // Column Definitions: Defines the columns to be displayed.
   const [colDefs] = useState([
     {
-      field: "Fecha",
-      cellDataType: "date",
-    },
-    {
-      field: "Cuenta Origen",
+      field: "Banco Destino",
       cellEditor: "agRichSelectCellEditor",
 
-      cellEditorParams: {
-        values: depositos,
-        allowTyping: true,
-        filterList: true,
-        highlightMatch: true,
-      },
-    },
-    {
-      field: "Subcuenta Origen",
-      cellEditor: "agRichSelectCellEditor",
-      cellEditorParams: ({ data }) => {
-        if (data["Cuenta Origen"] == null) return
-        return {
-          values: Object.values(auxiliares[data["Cuenta Origen"]]),
-          allowTyping: true,
-          filterList: true,
-          highlightMatch: true,
-        }
-      },
-    },
-    {
-      field: "Banco",
-      cellEditor: "agRichSelectCellEditor",
       cellEditorParams: {
         values: Object.values(bancos),
         allowTyping: true,
@@ -62,7 +35,11 @@ export default function Depositos({ appData, setAppData }) {
       },
     },
     {
-      field: "Monto",
+      field: "Fecha",
+      cellDataType: "date",
+    },
+    {
+      field: "Monto banco",
       cellDataType: "number",
       valueFormatter: (p) =>
         p.value > 0
@@ -71,9 +48,58 @@ export default function Depositos({ appData, setAppData }) {
             }).format(p.value)
           : p.value,
     },
-    { field: "Descripcion" },
-
+    {
+      field: "Comisiones",
+      cellDataType: "number",
+      valueFormatter: (p) =>
+        p.value > 0
+          ? new Intl.NumberFormat("en-EN", {
+              minimumFractionDigits: 2,
+            }).format(p.value)
+          : p.value,
+    },
+    {
+      field: "ISV Comisiones",
+      cellDataType: "number",
+      valueFormatter: (p) =>
+        p.value > 0
+          ? new Intl.NumberFormat("en-EN", {
+              minimumFractionDigits: 2,
+            }).format(p.value)
+          : p.value,
+    },
+    {
+      field: "Retencion ISR",
+      cellDataType: "number",
+      valueFormatter: (p) =>
+        p.value > 0
+          ? new Intl.NumberFormat("en-EN", {
+              minimumFractionDigits: 2,
+            }).format(p.value)
+          : p.value,
+    },
+    {
+      field: "Retencion ISV",
+      cellDataType: "number",
+      valueFormatter: (p) =>
+        p.value > 0
+          ? new Intl.NumberFormat("en-EN", {
+              minimumFractionDigits: 2,
+            }).format(p.value)
+          : p.value,
+    },
     { field: "Referencia" },
+    {
+      field: "Banco pertenece",
+      cellEditor: "agRichSelectCellEditor",
+
+      cellEditorParams: {
+        values: Object.values(bancos),
+        allowTyping: true,
+        filterList: true,
+        highlightMatch: true,
+      },
+    },
   ])
 
   const defaultColDef = {
@@ -96,14 +122,17 @@ export default function Depositos({ appData, setAppData }) {
         <button
           className="btn btn-sm"
           onClick={() =>
-            setAppData({ ...appData, depositos: [...appData.depositos, []] })
+            setAppData({
+              ...appData,
+              liquidaciones: [...appData.liquidaciones, {}],
+            })
           }
         >
           Agregar linea
         </button>
       </div>
       <AgGridReact
-        rowData={appData.depositos}
+        rowData={appData.liquidaciones}
         columnDefs={colDefs}
         rowHeight={35}
         defaultColDef={defaultColDef}

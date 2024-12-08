@@ -1,18 +1,18 @@
 import { AgGridReact } from "ag-grid-react" // React Data Grid Component
 import "ag-grid-enterprise"
-import { auxiliares, bancos, depositos } from "../../datamodel"
+import { auxiliares, bancos, salidas } from "../../datamodel"
 import { useMemo, useState } from "react"
 import PropTypes from "prop-types"
 import { dataTypeDefinitions } from "../Utils/dataTypeDefs"
 
-Depositos.propTypes = {
+Salidas.propTypes = {
   appData: PropTypes.shape({
-    depositos: PropTypes.array.isRequired,
+    salidas: PropTypes.array.isRequired,
   }).isRequired,
   setAppData: PropTypes.func.isRequired,
 }
 
-export default function Depositos({ appData, setAppData }) {
+export default function Salidas({ appData, setAppData }) {
   const cellSelection = useMemo(() => {
     return {
       handle: {
@@ -32,7 +32,7 @@ export default function Depositos({ appData, setAppData }) {
       cellEditor: "agRichSelectCellEditor",
 
       cellEditorParams: {
-        values: depositos,
+        values: salidas,
         allowTyping: true,
         filterList: true,
         highlightMatch: true,
@@ -71,9 +71,21 @@ export default function Depositos({ appData, setAppData }) {
             }).format(p.value)
           : p.value,
     },
+    {
+      field: "Tipo de salida",
+      cellEditor: "agRichSelectCellEditor",
+      cellEditorParams: {
+        values: ["Transferencia", "Cheque"],
+        allowTyping: true,
+        filterList: true,
+        highlightMatch: true,
+      },
+    },
+    {
+      field: "N Cheque",
+      cellDataType: "number",
+    },
     { field: "Descripcion" },
-
-    { field: "Referencia" },
   ])
 
   const defaultColDef = {
@@ -96,14 +108,14 @@ export default function Depositos({ appData, setAppData }) {
         <button
           className="btn btn-sm"
           onClick={() =>
-            setAppData({ ...appData, depositos: [...appData.depositos, []] })
+            setAppData({ ...appData, salidas: [...appData.salidas, []] })
           }
         >
           Agregar linea
         </button>
       </div>
       <AgGridReact
-        rowData={appData.depositos}
+        rowData={appData.salidas}
         columnDefs={colDefs}
         rowHeight={35}
         defaultColDef={defaultColDef}
