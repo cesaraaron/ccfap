@@ -7,7 +7,7 @@ import Traslados from "./traslados"
 
 const LeftPanel = (props) => {
   return (
-    <div className="flex ">
+    <div>
       <div role="tablist" className="tabs tabs-sm tabs-lifted w-full">
         <input
           type="radio"

@@ -2,10 +2,12 @@ import { useState, useCallback } from "react"
 import Movimientos from "./Components/movimientos"
 import Visualizador from "./Components/visualizador"
 import { data } from "./Utils/dataShape"
+import { ActionButtons } from "./Components/actionButtons"
+import { deepCopy } from "./Utils/deepCopy"
 
 const App = () => {
   const [leftPanelWidth, setLeftPanelWidth] = useState(50) // Initial width percentage of left panel
-  const [appData, setAppData] = useState(data)
+  const [appData, setAppData] = useState(deepCopy(data))
 
   const handleMouseMove = useCallback((event) => {
     const newWidth = (event.clientX / window.innerWidth) * 100 // Calculate new width percentage
@@ -23,7 +25,7 @@ const App = () => {
   }, [handleMouseMove, handleMouseUp])
 
   return (
-    <div className="flex h-screen">
+    <div className="flex">
       {/* Left Panel */}
       <div
         style={{ width: `${leftPanelWidth}%` }}
@@ -33,6 +35,7 @@ const App = () => {
           <h2 className="text-xl text-center p-4">Movimientos</h2>
           <Movimientos appData={appData} setAppData={setAppData} />
         </div>
+        <ActionButtons appData={appData} setAppData={setAppData} />
       </div>
 
       {/* Draggable Divider */}

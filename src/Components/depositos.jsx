@@ -76,28 +76,37 @@ export default function Depositos({ appData, setAppData }) {
     { field: "Referencia" },
   ])
 
-  const defaultColDef = {
-    flex: 1,
-    editable: true,
-    enableSorting: false,
-    sortable: false,
-    suppressHeaderMenuButton: true,
-    wrapHeaderText: true,
-    suppressHeaderContextMenu: true,
-  }
+  // const getRowId = useCallback((p) => p.data.id, [])
+
+  const defaultColDef = useMemo(
+    () => ({
+      flex: 1,
+      editable: true,
+      enableSorting: false,
+      sortable: false,
+      suppressHeaderMenuButton: true,
+      wrapHeaderText: true,
+      suppressHeaderContextMenu: true,
+    }),
+    [],
+  )
 
   return (
     // wrapping container with theme & size
     <div
-      className="ag-theme-quartz w-full" // applying the Data Grid theme
-      style={{ height: 500 }} // the Data Grid will fill the size of the parent container
+      className="ag-theme-quartz w-full h-full" // applying the Data Grid theme
+      style={{ height: "500px" }} // the Data Grid will fill the size of the parent container
     >
       <div className="p-2">
         <button
           className="btn btn-sm"
-          onClick={() =>
-            setAppData({ ...appData, depositos: [...appData.depositos, []] })
-          }
+          onClick={() => {
+            setAppData({
+              ...appData,
+              depositos: [...appData.depositos, {}],
+            })
+            // gridRef.api.refreshCells()
+          }}
         >
           Agregar linea
         </button>
@@ -110,6 +119,9 @@ export default function Depositos({ appData, setAppData }) {
         cellSelection={cellSelection}
         dataTypeDefinitions={dataTypeDefinitions}
         suppressMovableColumns={true}
+        onModelUpdated={(p) => {
+          p.api.refreshClientSideRowModel()
+        }}
       />
     </div>
   )
