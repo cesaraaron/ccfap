@@ -5,3 +5,21 @@
 .ag-theme-quartz {
   --ag-font-size: 11px;
 }
+
+/* App.css */
+.app {
+  height: 100vh;
+  display: flex;
+}
+
+.split {
+  display: flex;
+  height: 100%;
+  width: 100%;
+}
+
+.gutter {
+  background-color: #ddd;
+  cursor: col-resize; /* Change to row-resize for vertical splits */
+  width: 4px; /* Matches the gutterSize prop */
+}

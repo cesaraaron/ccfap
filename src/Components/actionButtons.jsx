@@ -24,6 +24,8 @@ export const ActionButtons = ({ setAppData }) => {
             <form method="dialog">
               {/* if there is a button in form, it will close the modal */}
               <div className="space-x-3">
+                <button className="btn">No</button>
+
                 <button
                   className="btn btn-error"
                   onClick={() => {
@@ -32,7 +34,6 @@ export const ActionButtons = ({ setAppData }) => {
                 >
                   Si
                 </button>
-                <button className="btn">No</button>
               </div>
             </form>
           </div>

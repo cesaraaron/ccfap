@@ -1,61 +1,32 @@
-import { useState, useCallback } from "react"
+import { useState } from "react"
 import Movimientos from "./Components/movimientos"
 import Visualizador from "./Components/visualizador"
 import { data } from "./Utils/dataShape"
 import { ActionButtons } from "./Components/actionButtons"
 import { deepCopy } from "./Utils/deepCopy"
+import Split from "react-split"
 
 const App = () => {
-  const [leftPanelWidth, setLeftPanelWidth] = useState(50) // Initial width percentage of left panel
   const [appData, setAppData] = useState(deepCopy(data))
 
-  const handleMouseMove = useCallback((event) => {
-    const newWidth = (event.clientX / window.innerWidth) * 100 // Calculate new width percentage
-    setLeftPanelWidth(newWidth) // Update the left panel width
-  }, [])
-
-  const handleMouseUp = useCallback(() => {
-    window.removeEventListener("mousemove", handleMouseMove) // Remove the event listener on mouse up
-    window.removeEventListener("mouseup", handleMouseUp)
-  }, [handleMouseMove])
-
-  const handleMouseDown = useCallback(() => {
-    window.addEventListener("mousemove", handleMouseMove) // Add event listeners on mouse down
-    window.addEventListener("mouseup", handleMouseUp)
-  }, [handleMouseMove, handleMouseUp])
-
   return (
-    <div className="flex">
-      {/* Left Panel */}
-      <div
-        style={{ width: `${leftPanelWidth}%` }}
-        className="overflow-y-auto border-r border-gray-300"
-      >
-        <div className="p-4">
-          <h2 className="text-xl text-center p-4">Movimientos</h2>
-          <Movimientos appData={appData} setAppData={setAppData} />
-        </div>
-        <ActionButtons appData={appData} setAppData={setAppData} />
-      </div>
-
-      {/* Draggable Divider */}
-      <div
-        className="w-1 cursor-col-resize"
-        onMouseDown={handleMouseDown}
-        style={{ cursor: "col-resize", zIndex: 10 }}
-      />
-
-      {/* Right Panel */}
-      <div
-        style={{ width: `${100 - leftPanelWidth}%` }}
-        className="overflow-y-auto"
-      >
-        <div className="p-4">
-          <h2 className="text-xl text-center p-4">Visualizador</h2>
-          <div className="overflow-y-auto">
+    <div>
+      <div className="app">
+        <Split
+          sizes={[50, 50]} // Initial size percentages of the panes
+          minSize={100} // Minimum size for each pane in pixels
+          gutterSize={4} // Size of the draggable divider
+          direction="horizontal" // 'horizontal' for side-by-side, 'vertical' for stacked
+          className="split"
+        >
+          <div className="flex-col space-y-4 p-4">
+            <Movimientos appData={appData} setAppData={setAppData} />
+            <ActionButtons appData={appData} setAppData={setAppData} />
+          </div>
+          <div className="p-4">
             <Visualizador />
           </div>
-        </div>
+        </Split>
       </div>
     </div>
   )
