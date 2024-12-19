@@ -8,7 +8,7 @@ import Traslados from "./traslados"
 const LeftPanel = (props) => {
   return (
     <div>
-      <div role="tablist" className="tabs tabs-sm tabs-lifted w-full">
+      <div role="tablist" className="tabs tabs-sm tabs-lifted w-full h-full">
         <input
           type="radio"
           name="movimientos_tabs"

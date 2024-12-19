@@ -1,10 +1,10 @@
 import { data } from "../Utils/dataShape"
 import PropTypes from "prop-types"
-import { deepCopy } from "../Utils/deepCopy"
+import { deepCopy } from "../Utils/utils"
 
 export const ActionButtons = ({ setAppData }) => {
   return (
-    <div className="flex pt-8 justify-center">
+    <div className="flex  justify-center">
       <button className="btn btn-ghost btn-sm">Generar excel</button>
 
       {/* Open the modal using document.getElementById('ID').showModal() method */}
@@ -24,16 +24,15 @@ export const ActionButtons = ({ setAppData }) => {
             <form method="dialog">
               {/* if there is a button in form, it will close the modal */}
               <div className="space-x-3">
-                <button className="btn">No</button>
-
                 <button
-                  className="btn btn-error"
+                  className="btn btn-sm btn-error"
                   onClick={() => {
                     setAppData(deepCopy(data))
                   }}
                 >
                   Si
                 </button>
+                <button className="btn btn-sm">No</button>
               </div>
             </form>
           </div>

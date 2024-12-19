@@ -3,7 +3,7 @@ import Movimientos from "./Components/movimientos"
 import Visualizador from "./Components/visualizador"
 import { data } from "./Utils/dataShape"
 import { ActionButtons } from "./Components/actionButtons"
-import { deepCopy } from "./Utils/deepCopy"
+import { deepCopy } from "./Utils/utils"
 import Split from "react-split"
 
 const App = () => {
@@ -14,12 +14,12 @@ const App = () => {
       <div className="app">
         <Split
           sizes={[50, 50]} // Initial size percentages of the panes
-          minSize={100} // Minimum size for each pane in pixels
+          minSize={400} // Minimum size for each pane in pixels
           gutterSize={4} // Size of the draggable divider
           direction="horizontal" // 'horizontal' for side-by-side, 'vertical' for stacked
           className="split"
         >
-          <div className="flex-col space-y-4 p-4">
+          <div className="flex-col p-4">
             <Movimientos appData={appData} setAppData={setAppData} />
             <ActionButtons appData={appData} setAppData={setAppData} />
           </div>

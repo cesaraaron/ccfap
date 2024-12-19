@@ -4,6 +4,7 @@ import { auxiliares, cxc } from "../../datamodel"
 import { useMemo, useState } from "react"
 import PropTypes from "prop-types"
 import { dataTypeDefinitions } from "../Utils/dataTypeDefs"
+import { generateId } from "../Utils/utils"
 
 Cambioscxc.propTypes = {
   appData: PropTypes.shape({
@@ -24,11 +25,13 @@ export default function Cambioscxc({ appData, setAppData }) {
   // Column Definitions: Defines the columns to be displayed.
   const [colDefs] = useState([
     {
-      field: "Fecha",
+      headerName: "Fecha",
+      field: "fecha",
       cellDataType: "date",
     },
     {
-      field: "Cuenta Origen",
+      headerName: "Cuenta Origen",
+      field: "cuentaOrigen",
       cellEditor: "agRichSelectCellEditor",
 
       cellEditorParams: {
@@ -39,12 +42,13 @@ export default function Cambioscxc({ appData, setAppData }) {
       },
     },
     {
-      field: "Subcuenta Origen",
+      headerName: "Subcuenta Origen",
+      field: "subCuentaOrigen",
       cellEditor: "agRichSelectCellEditor",
       cellEditorParams: ({ data }) => {
-        if (data["Cuenta Origen"] == null) return
+        if (data["cuentaOrigen"] == null) return
         return {
-          values: Object.values(auxiliares[data["Cuenta Origen"]]),
+          values: Object.values(auxiliares[data["cuentaOrigen"]]),
           allowTyping: true,
           filterList: true,
           highlightMatch: true,
@@ -52,7 +56,8 @@ export default function Cambioscxc({ appData, setAppData }) {
       },
     },
     {
-      field: "Cuenta destino",
+      headerName: "Cuenta destino",
+      field: "cuentaDestino",
       cellEditor: "agRichSelectCellEditor",
       cellEditorParams: {
         values: Object.keys(auxiliares),
@@ -62,21 +67,35 @@ export default function Cambioscxc({ appData, setAppData }) {
       },
     },
     {
-      field: "Subcuenta destino",
+      headerName: "Subcuenta destino",
+      field: "subCuentaDestino",
       cellEditor: "agRichSelectCellEditor",
       cellEditorParams: ({ data }) => {
-        if (data["Cuenta destino"] == null) return
+        if (data["cuentaDestino"] == null) return
         return {
-          values: Object.values(auxiliares[data["Cuenta destino"]]),
+          values: Object.values(auxiliares[data["cuentaDestino"]]),
           allowTyping: true,
           filterList: true,
           highlightMatch: true,
         }
       },
     },
-    { field: "Monto", cellDataType: "number" },
+    {
+      headerName: "Monto",
+      field: "monto",
+      cellDataType: "number",
+      valueFormatter: (p) =>
+        p.value > 0
+          ? new Intl.NumberFormat("en-EN", {
+              minimumFractionDigits: 2,
+            }).format(p.value)
+          : p.value,
+    },
 
-    { field: "Descripcion" },
+    {
+      headerName: "Descripción",
+      field: "descripcion",
+    },
   ])
 
   const defaultColDef = {
@@ -91,29 +110,34 @@ export default function Cambioscxc({ appData, setAppData }) {
 
   return (
     // wrapping container with theme & size
-    <div
-      className="ag-theme-quartz w-full" // applying the Data Grid theme
-      style={{ height: 500 }} // the Data Grid will fill the size of the parent container
-    >
+    <div className="flex flex-col">
       <div className="p-2">
         <button
           className="btn btn-sm"
           onClick={() =>
-            setAppData({ ...appData, cambioscxc: [...appData.cambioscxc, []] })
+            setAppData({
+              ...appData,
+              cambioscxc: [...appData.cambioscxc, { id: generateId() }],
+            })
           }
         >
           Agregar linea
         </button>
       </div>
-      <AgGridReact
-        rowData={appData.cambioscxc}
-        columnDefs={colDefs}
-        rowHeight={35}
-        defaultColDef={defaultColDef}
-        cellSelection={cellSelection}
-        dataTypeDefinitions={dataTypeDefinitions}
-        suppressMovableColumns={true}
-      />
+      <div
+        className="ag-theme-quartz w-full" // applying the Data Grid theme
+        style={{ height: 500 }} // the Data Grid will fill the size of the parent container
+      >
+        <AgGridReact
+          rowData={appData.cambioscxc}
+          columnDefs={colDefs}
+          rowHeight={35}
+          defaultColDef={defaultColDef}
+          cellSelection={cellSelection}
+          dataTypeDefinitions={dataTypeDefinitions}
+          suppressMovableColumns={true}
+        />
+      </div>
     </div>
   )
 }
