@@ -4,8 +4,11 @@ import { auxiliares, bancos, depositos } from "../../datamodel"
 import { useMemo, useState } from "react"
 import PropTypes from "prop-types"
 import { dataTypeDefinitions } from "../Utils/dataTypeDefs"
-import { generateId } from "../Utils/utils"
-import { generateCreditosFA, syncArrays } from "../Utils/generateCXC"
+import { generateId, processDataFromClipboard } from "../Utils/utils"
+import {
+  generateCreditosFA,
+  synCreditosFA as syncCreditosFA,
+} from "../Utils/generateCXC"
 
 Depositos.propTypes = {
   appData: PropTypes.shape({
@@ -29,7 +32,7 @@ export default function Depositos({ appData, setAppData }) {
     {
       headerName: "Fecha",
       field: "fecha",
-      cellDataType: "date",
+      cellEditor: "agDateStringCellEditor",
     },
     {
       headerName: "Cuenta Origen",
@@ -60,6 +63,7 @@ export default function Depositos({ appData, setAppData }) {
     {
       headerName: "Banco",
       field: "banco",
+      flex: 1.5,
       cellEditor: "agRichSelectCellEditor",
       cellEditorParams: {
         values: Object.values(bancos),
@@ -84,8 +88,6 @@ export default function Depositos({ appData, setAppData }) {
     { headerName: "Referencia", field: "referencia" },
   ])
 
-  // const getRowId = useCallback((p) => p.data.id, [])
-
   const defaultColDef = useMemo(
     () => ({
       flex: 1,
@@ -102,7 +104,11 @@ export default function Depositos({ appData, setAppData }) {
   const onCellValueChanged = () => {
     const newCreditosFA = generateCreditosFA(appData.depositos)
     const oldCreditosFA = appData.cambioscxc
-    const updatedCreditosFA = syncArrays(oldCreditosFA, newCreditosFA)
+    const updatedCreditosFA = syncCreditosFA(
+      oldCreditosFA,
+      newCreditosFA,
+      appData.depositos,
+    )
     setAppData({ ...appData, cambioscxc: [...updatedCreditosFA] })
     // console.log("appData: ", appData)
   }
@@ -138,6 +144,14 @@ export default function Depositos({ appData, setAppData }) {
           dataTypeDefinitions={dataTypeDefinitions}
           suppressMovableColumns={true}
           onCellValueChanged={onCellValueChanged}
+          processDataFromClipboard={(p) =>
+            processDataFromClipboard(p, (newRows) => {
+              setAppData({
+                ...appData,
+                depositos: [...appData.depositos, ...newRows],
+              })
+            })
+          }
         />
       </div>
     </div>

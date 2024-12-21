@@ -4,6 +4,7 @@ import { bancos } from "../../datamodel"
 import { useMemo, useState } from "react"
 import PropTypes from "prop-types"
 import { dataTypeDefinitions } from "../Utils/dataTypeDefs"
+import { processDataFromClipboard } from "../Utils/utils"
 
 Traslados.propTypes = {
   appData: PropTypes.shape({
@@ -25,7 +26,7 @@ export default function Traslados({ appData, setAppData }) {
   const [colDefs] = useState([
     {
       field: "Fecha",
-      cellDataType: "date",
+      cellEditor: "agDateStringCellEditor",
     },
     {
       field: "Banco Origen",
@@ -108,6 +109,14 @@ export default function Traslados({ appData, setAppData }) {
           cellSelection={cellSelection}
           dataTypeDefinitions={dataTypeDefinitions}
           suppressMovableColumns={true}
+          processDataFromClipboard={(p) =>
+            processDataFromClipboard(p, (newRows) => {
+              setAppData({
+                ...appData,
+                traslados: [...appData.traslados, ...newRows],
+              })
+            })
+          }
         />
       </div>
     </div>

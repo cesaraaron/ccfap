@@ -13,8 +13,8 @@ const App = () => {
     <div>
       <div className="app">
         <Split
-          sizes={[50, 50]} // Initial size percentages of the panes
-          minSize={400} // Minimum size for each pane in pixels
+          sizes={[60, 40]} // Initial size percentages of the panes
+          minSize={[600, 400]} // Minimum size for each pane in pixels
           gutterSize={4} // Size of the draggable divider
           direction="horizontal" // 'horizontal' for side-by-side, 'vertical' for stacked
           className="split"

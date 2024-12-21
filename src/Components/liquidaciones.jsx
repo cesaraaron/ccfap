@@ -4,6 +4,7 @@ import { bancos } from "../../datamodel"
 import { useMemo, useState } from "react"
 import PropTypes from "prop-types"
 import { dataTypeDefinitions } from "../Utils/dataTypeDefs"
+import { processDataFromClipboard } from "../Utils/utils"
 
 Liquidaciones.propTypes = {
   appData: PropTypes.shape({
@@ -36,7 +37,7 @@ export default function Liquidaciones({ appData, setAppData }) {
     },
     {
       field: "Fecha",
-      cellDataType: "date",
+      cellEditor: "agDateStringCellEditor",
     },
     {
       field: "Monto banco",
@@ -140,6 +141,14 @@ export default function Liquidaciones({ appData, setAppData }) {
           cellSelection={cellSelection}
           dataTypeDefinitions={dataTypeDefinitions}
           suppressMovableColumns={true}
+          processDataFromClipboard={(p) =>
+            processDataFromClipboard(p, (newRows) => {
+              setAppData({
+                ...appData,
+                liquidaciones: [...appData.liquidaciones, ...newRows],
+              })
+            })
+          }
         />
       </div>
     </div>

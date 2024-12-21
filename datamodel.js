@@ -116,7 +116,7 @@ export const auxiliares = {
     1559: "FA96-Banco Tesorería",
     1560: "FA97-Banco Tesorería",
     1561: "FA98-Banco Tesorería",
-    1562: "FA99-Banco Tesorería ",
+    1562: "FA99-Banco Tesorería",
     1289: "Farmacia Fino 3",
     715: "Farmacia Fino-FA88",
     324: "Farmacia Fino-FA98",

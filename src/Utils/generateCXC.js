@@ -3,6 +3,8 @@ import {
   isValidDate,
   hasFAInIt,
   getFANameWithString,
+  getCxpFaWithName as getCxpFaWithNumbers,
+  getFaNumbers,
 } from "./utils"
 
 /**
@@ -54,6 +56,49 @@ export const generateCreditosFA = (data) => {
   return [...mappedValues.filter((item) => item !== false)]
 }
 
+export const generateAbonosFA = (data) => {
+  const mappedValues = data.map(
+    ({
+      id,
+      fecha,
+      monto,
+      banco,
+      cuentaOrigen,
+      descripcion,
+      subCuentaOrigen,
+    }) => {
+      // console.log("Inside generateCreditosFA, data: ", fecha)
+
+      if (
+        isValidDate(fecha) &&
+        !isNaN(monto) &&
+        monto > 0 &&
+        hasAnyChar(cuentaOrigen) &&
+        hasAnyChar(subCuentaOrigen) &&
+        hasAnyChar(banco) &&
+        hasFAInIt(descripcion)
+      ) {
+        // eg: FA100, FA01 etc
+        const faNumbers = getFaNumbers(descripcion)
+        return {
+          id: id,
+          fecha: fecha,
+          cuentaOrigen: cuentaOrigen,
+          subCuentaOrigen: subCuentaOrigen,
+          cuentaDestino: "CXP Farmacias",
+          subCuentaDestino: getCxpFaWithNumbers(faNumbers),
+          monto: monto,
+          descripcion: descripcion,
+        }
+      }
+
+      return false
+    },
+  )
+
+  return [...mappedValues.filter((item) => item !== false)]
+}
+
 /**
  * Generates CXC for the FA deposits.
  *
@@ -62,24 +107,21 @@ export const generateCreditosFA = (data) => {
  * @returns {Array<import('./dataShape').CambioCXC>} An array of objects after processing the input data.
  *
  */
-export const syncArrays = (oldcxc, newcxc) => {
+export const synCreditosFA = (oldcxc, newcxc, depositos) => {
   // Create a map for quick access to objects in arrayA by id
   const mappedOldcxc = new Map(oldcxc.map((obj) => [obj.id, obj]))
   const mappedNewcxc = new Map(newcxc.map((obj) => [obj.id, obj]))
+  const mappedDepositos = new Map(depositos.map((obj) => [obj.id, obj]))
 
-  const intersectedcxc = newcxc.filter((obj) => mappedOldcxc.has(obj.id))
-  const validIntersectedcxc = generateCreditosFA(intersectedcxc)
+  const intersectedcxc = newcxc.filter(
+    (obj) => mappedOldcxc.has(obj.id) && mappedDepositos.has(obj.id),
+  )
 
-  const offsetcxc = oldcxc.filter((obj) => !mappedNewcxc.has(obj.id))
-  // const result = [...oldcxc.filter((o) => !mappedNewcxc.has(o.id))]
-  const result = [...offsetcxc, ...validIntersectedcxc]
+  const offsetcxc = oldcxc.filter(
+    (obj) => !mappedNewcxc.has(obj.id) && !mappedDepositos.has(obj.id),
+  )
 
-  // Update objects in arrayB based on matching ids from arrayA
-  newcxc.forEach((objB) => {
-    if (mappedOldcxc.has(objB.id)) {
-      result.push({ ...objB })
-    }
-  })
+  const result = [...offsetcxc, ...intersectedcxc]
 
   newcxc.forEach((obj) => {
     if (!mappedOldcxc.has(obj.id)) {

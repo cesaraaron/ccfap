@@ -92,13 +92,14 @@ export const data = {
   ],
   salidas: [
     {
+      id: generateId(),
       fecha: null,
       cuentaOrigen: "",
       subCuentaOrigen: "",
       banco: "",
-      monto: "",
+      monto: null,
       tipoSalida: "",
-      nCheque: "",
+      nCheque: null,
       descripcion: "",
     },
   ],

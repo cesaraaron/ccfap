@@ -4,7 +4,7 @@ import { auxiliares, cxc } from "../../datamodel"
 import { useMemo, useState } from "react"
 import PropTypes from "prop-types"
 import { dataTypeDefinitions } from "../Utils/dataTypeDefs"
-import { generateId } from "../Utils/utils"
+import { generateId, processDataFromClipboard } from "../Utils/utils"
 
 Cambioscxc.propTypes = {
   appData: PropTypes.shape({
@@ -27,7 +27,7 @@ export default function Cambioscxc({ appData, setAppData }) {
     {
       headerName: "Fecha",
       field: "fecha",
-      cellDataType: "date",
+      cellEditor: "agDateStringCellEditor",
     },
     {
       headerName: "Cuenta Origen",
@@ -43,6 +43,7 @@ export default function Cambioscxc({ appData, setAppData }) {
     },
     {
       headerName: "Subcuenta Origen",
+      flex: 1.5,
       field: "subCuentaOrigen",
       cellEditor: "agRichSelectCellEditor",
       cellEditorParams: ({ data }) => {
@@ -57,6 +58,7 @@ export default function Cambioscxc({ appData, setAppData }) {
     },
     {
       headerName: "Cuenta destino",
+      flex: 1.5,
       field: "cuentaDestino",
       cellEditor: "agRichSelectCellEditor",
       cellEditorParams: {
@@ -68,6 +70,7 @@ export default function Cambioscxc({ appData, setAppData }) {
     },
     {
       headerName: "Subcuenta destino",
+      flex: 1.5,
       field: "subCuentaDestino",
       cellEditor: "agRichSelectCellEditor",
       cellEditorParams: ({ data }) => {
@@ -95,6 +98,7 @@ export default function Cambioscxc({ appData, setAppData }) {
     {
       headerName: "Descripción",
       field: "descripcion",
+      flex: 1.5,
     },
   ])
 
@@ -136,6 +140,14 @@ export default function Cambioscxc({ appData, setAppData }) {
           cellSelection={cellSelection}
           dataTypeDefinitions={dataTypeDefinitions}
           suppressMovableColumns={true}
+          processDataFromClipboard={(p) =>
+            processDataFromClipboard(p, (newRows) => {
+              setAppData({
+                ...appData,
+                cambioscxc: [...appData.cambioscxc, ...newRows],
+              })
+            })
+          }
         />
       </div>
     </div>

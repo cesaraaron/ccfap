@@ -4,10 +4,13 @@ import { auxiliares, bancos, salidas } from "../../datamodel"
 import { useMemo, useState } from "react"
 import PropTypes from "prop-types"
 import { dataTypeDefinitions } from "../Utils/dataTypeDefs"
+import { generateId, processDataFromClipboard } from "../Utils/utils"
+import { generateAbonosFA, synCreditosFA } from "../Utils/generateCXC"
 
 Salidas.propTypes = {
   appData: PropTypes.shape({
     salidas: PropTypes.array.isRequired,
+    cambioscxc: PropTypes.array.isRequired,
   }).isRequired,
   setAppData: PropTypes.func.isRequired,
 }
@@ -24,11 +27,13 @@ export default function Salidas({ appData, setAppData }) {
   // Column Definitions: Defines the columns to be displayed.
   const [colDefs] = useState([
     {
-      field: "Fecha",
-      cellDataType: "date",
+      headerName: "Fecha",
+      field: "fecha",
+      cellEditor: "agDateStringCellEditor",
     },
     {
-      field: "Cuenta Origen",
+      headerName: "Cuenta Origen",
+      field: "cuentaOrigen",
       cellEditor: "agRichSelectCellEditor",
 
       cellEditorParams: {
@@ -39,12 +44,14 @@ export default function Salidas({ appData, setAppData }) {
       },
     },
     {
-      field: "Subcuenta Origen",
+      headerName: "Subcuenta Origen",
+      flex: 1.5,
+      field: "subCuentaOrigen",
       cellEditor: "agRichSelectCellEditor",
       cellEditorParams: ({ data }) => {
-        if (data["Cuenta Origen"] == null) return
+        if (data["cuentaOrigen"] == null) return
         return {
-          values: Object.values(auxiliares[data["Cuenta Origen"]]),
+          values: Object.values(auxiliares[data["cuentaOrigen"]]),
           allowTyping: true,
           filterList: true,
           highlightMatch: true,
@@ -52,7 +59,8 @@ export default function Salidas({ appData, setAppData }) {
       },
     },
     {
-      field: "Banco",
+      headerName: "Banco",
+      field: "banco",
       cellEditor: "agRichSelectCellEditor",
       cellEditorParams: {
         values: Object.values(bancos),
@@ -62,7 +70,8 @@ export default function Salidas({ appData, setAppData }) {
       },
     },
     {
-      field: "Monto",
+      headerName: "Monto",
+      field: "monto",
       cellDataType: "number",
       valueFormatter: (p) =>
         p.value > 0
@@ -72,7 +81,8 @@ export default function Salidas({ appData, setAppData }) {
           : p.value,
     },
     {
-      field: "Tipo de salida",
+      headerName: "Tipo de salida",
+      field: "tipoSalida",
       cellEditor: "agRichSelectCellEditor",
       cellEditorParams: {
         values: ["Transferencia", "Cheque"],
@@ -82,10 +92,14 @@ export default function Salidas({ appData, setAppData }) {
       },
     },
     {
-      field: "N Cheque",
+      headerName: "N Cheque",
+      field: "nCheque",
       cellDataType: "number",
     },
-    { field: "Descripcion" },
+    {
+      headerName: "Descripcion",
+      field: "descripcion",
+    },
   ])
 
   const defaultColDef = {
@@ -98,6 +112,18 @@ export default function Salidas({ appData, setAppData }) {
     suppressHeaderContextMenu: true,
   }
 
+  const onCellValueChanged = () => {
+    const newCreditosFA = generateAbonosFA(appData.salidas)
+    const oldCreditosFA = appData.cambioscxc
+    const updatedCreditosFA = synCreditosFA(
+      oldCreditosFA,
+      newCreditosFA,
+      appData.salidas,
+    )
+    setAppData({ ...appData, cambioscxc: [...updatedCreditosFA] })
+    // console.log("appData: ", appData)
+  }
+
   return (
     // wrapping container with theme & size
     <div className="flex flex-col">
@@ -105,7 +131,10 @@ export default function Salidas({ appData, setAppData }) {
         <button
           className="btn btn-sm"
           onClick={() =>
-            setAppData({ ...appData, salidas: [...appData.salidas, []] })
+            setAppData({
+              ...appData,
+              salidas: [...appData.salidas, { id: generateId() }],
+            })
           }
         >
           Agregar linea
@@ -123,6 +152,15 @@ export default function Salidas({ appData, setAppData }) {
           cellSelection={cellSelection}
           dataTypeDefinitions={dataTypeDefinitions}
           suppressMovableColumns={true}
+          onCellValueChanged={onCellValueChanged}
+          processDataFromClipboard={(p) =>
+            processDataFromClipboard(p, (newRows) => {
+              setAppData({
+                ...appData,
+                salidas: [...appData.salidas, ...newRows],
+              })
+            })
+          }
         />
       </div>
     </div>

@@ -4,6 +4,7 @@ import { auxiliares, cxp } from "../../datamodel"
 import { useMemo, useState } from "react"
 import PropTypes from "prop-types"
 import { dataTypeDefinitions } from "../Utils/dataTypeDefs"
+import { processDataFromClipboard } from "../Utils/utils"
 
 Cambioscxp.propTypes = {
   appData: PropTypes.shape({
@@ -25,7 +26,7 @@ export default function Cambioscxp({ appData, setAppData }) {
   const [colDefs] = useState([
     {
       field: "Fecha",
-      cellDataType: "date",
+      cellEditor: "agDateStringCellEditor",
     },
     {
       field: "Cuenta Origen",
@@ -114,6 +115,14 @@ export default function Cambioscxp({ appData, setAppData }) {
           cellSelection={cellSelection}
           dataTypeDefinitions={dataTypeDefinitions}
           suppressMovableColumns={true}
+          processDataFromClipboard={(p) =>
+            processDataFromClipboard(p, (newRows) => {
+              setAppData({
+                ...appData,
+                cambioscxp: [...appData.cambioscxp, ...newRows],
+              })
+            })
+          }
         />
       </div>
     </div>
