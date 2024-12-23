@@ -1,11 +1,19 @@
 import { data } from "../Utils/dataShape"
 import PropTypes from "prop-types"
 import { deepCopy } from "../Utils/utils"
+import { generateDepositosExcel } from "../Utils/generateExcel"
 
-export const ActionButtons = ({ setAppData }) => {
+export const ActionButtons = ({ setAppData, appData }) => {
   return (
     <div className="flex  justify-center">
-      <button className="btn btn-ghost btn-sm">Generar excel</button>
+      <button
+        className="btn btn-ghost btn-sm"
+        onClick={() => {
+          generateDepositosExcel(appData.depositos)
+        }}
+      >
+        Generar excel
+      </button>
 
       {/* Open the modal using document.getElementById('ID').showModal() method */}
       <button

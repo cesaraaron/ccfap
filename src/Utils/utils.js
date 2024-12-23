@@ -6,6 +6,11 @@ export function getFaNumbers(str) {
   return match ? match[1] : null
 }
 
+export const createDateFromString = (str = "") => {
+  const [day, month, year] = str.split("/").map(Number)
+  return new Date(year, month - 1, day)
+}
+
 export const isValidDate = (value) => {
   try {
     const [day, month, year] = value.split("/").map(Number)
@@ -66,6 +71,10 @@ export const areObjectsEqual = (obj1, obj2) => {
 
 export const deepCopy = (obj) => {
   return JSON.parse(JSON.stringify(obj))
+}
+
+export const getKeyByValue = (object, value) => {
+  return Object.keys(object).find((key) => object[key] === value)
 }
 
 export const generateId = () => {

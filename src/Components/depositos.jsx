@@ -113,6 +113,18 @@ export default function Depositos({ appData, setAppData }) {
     // console.log("appData: ", appData)
   }
 
+  const statusBar = useMemo(() => {
+    return {
+      statusPanels: [
+        { statusPanel: "agTotalAndFilteredRowCountComponent" },
+        { statusPanel: "agTotalRowCountComponent" },
+        { statusPanel: "agFilteredRowCountComponent" },
+        { statusPanel: "agSelectedRowCountComponent" },
+        { statusPanel: "agAggregationComponent" },
+      ],
+    }
+  }, [])
+
   return (
     // wrapping container with theme & size
     <div className="flex flex-col">
@@ -144,6 +156,7 @@ export default function Depositos({ appData, setAppData }) {
           dataTypeDefinitions={dataTypeDefinitions}
           suppressMovableColumns={true}
           onCellValueChanged={onCellValueChanged}
+          statusBar={statusBar}
           processDataFromClipboard={(p) =>
             processDataFromClipboard(p, (newRows) => {
               setAppData({
