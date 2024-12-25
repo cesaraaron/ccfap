@@ -4,7 +4,7 @@ import { bancos } from "../../datamodel"
 import { useMemo, useState } from "react"
 import PropTypes from "prop-types"
 import { dataTypeDefinitions } from "../Utils/dataTypeDefs"
-import { processDataFromClipboard } from "../Utils/utils"
+import { generateId, processDataFromClipboard } from "../Utils/utils"
 
 Liquidaciones.propTypes = {
   appData: PropTypes.shape({
@@ -25,7 +25,8 @@ export default function Liquidaciones({ appData, setAppData }) {
   // Column Definitions: Defines the columns to be displayed.
   const [colDefs] = useState([
     {
-      field: "Banco Destino",
+      headerName: "Banco Destino",
+      field: "bancoDestino",
       cellEditor: "agRichSelectCellEditor",
 
       cellEditorParams: {
@@ -36,11 +37,13 @@ export default function Liquidaciones({ appData, setAppData }) {
       },
     },
     {
-      field: "Fecha",
+      headerName: "Fecha",
+      field: "fecha",
       cellEditor: "agDateStringCellEditor",
     },
     {
-      field: "Monto banco",
+      headerName: "Monto banco",
+      field: "montoBanco",
       cellDataType: "number",
       valueFormatter: (p) =>
         p.value > 0
@@ -50,7 +53,8 @@ export default function Liquidaciones({ appData, setAppData }) {
           : p.value,
     },
     {
-      field: "Comisiones",
+      headerName: "Comisiones",
+      field: "comisiones",
       cellDataType: "number",
       valueFormatter: (p) =>
         p.value > 0
@@ -60,7 +64,8 @@ export default function Liquidaciones({ appData, setAppData }) {
           : p.value,
     },
     {
-      field: "ISV Comisiones",
+      headerName: "ISV Comisiones",
+      field: "isvComisiones",
       cellDataType: "number",
       valueFormatter: (p) =>
         p.value > 0
@@ -70,7 +75,8 @@ export default function Liquidaciones({ appData, setAppData }) {
           : p.value,
     },
     {
-      field: "Retencion ISR",
+      headerName: "Retencion ISR",
+      field: "retencionISR",
       cellDataType: "number",
       valueFormatter: (p) =>
         p.value > 0
@@ -80,7 +86,8 @@ export default function Liquidaciones({ appData, setAppData }) {
           : p.value,
     },
     {
-      field: "Retencion ISV",
+      headerName: "Retencion ISV",
+      field: "retencionISV",
       cellDataType: "number",
       valueFormatter: (p) =>
         p.value > 0
@@ -89,9 +96,10 @@ export default function Liquidaciones({ appData, setAppData }) {
             }).format(p.value)
           : p.value,
     },
-    { field: "Referencia" },
+    { headerName: "Referencia", field: "referencia" },
     {
-      field: "Banco pertenece",
+      headerName: "Banco pertenece",
+      field: "bancoPertenece",
       cellEditor: "agRichSelectCellEditor",
 
       cellEditorParams: {
@@ -122,7 +130,7 @@ export default function Liquidaciones({ appData, setAppData }) {
           onClick={() =>
             setAppData({
               ...appData,
-              liquidaciones: [...appData.liquidaciones, {}],
+              liquidaciones: [...appData.liquidaciones, { id: generateId() }],
             })
           }
         >

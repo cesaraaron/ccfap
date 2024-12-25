@@ -4,7 +4,7 @@ import { auxiliares, cxp } from "../../datamodel"
 import { useMemo, useState } from "react"
 import PropTypes from "prop-types"
 import { dataTypeDefinitions } from "../Utils/dataTypeDefs"
-import { processDataFromClipboard } from "../Utils/utils"
+import { generateId, processDataFromClipboard } from "../Utils/utils"
 
 Cambioscxp.propTypes = {
   appData: PropTypes.shape({
@@ -25,11 +25,13 @@ export default function Cambioscxp({ appData, setAppData }) {
   // Column Definitions: Defines the columns to be displayed.
   const [colDefs] = useState([
     {
-      field: "Fecha",
+      headerName: "Fecha",
+      field: "fecha",
       cellEditor: "agDateStringCellEditor",
     },
     {
-      field: "Cuenta Origen",
+      headerName: "Cuenta Origen",
+      field: "cuentaOrigen",
       cellEditor: "agRichSelectCellEditor",
 
       cellEditorParams: {
@@ -40,12 +42,13 @@ export default function Cambioscxp({ appData, setAppData }) {
       },
     },
     {
-      field: "Subcuenta Origen",
+      headerName: "Subcuenta Origen",
+      field: "subCuentaOrigen",
       cellEditor: "agRichSelectCellEditor",
       cellEditorParams: ({ data }) => {
-        if (data["Cuenta Origen"] == null) return
+        if (data["cuentaOrigen"] == null) return
         return {
-          values: Object.values(auxiliares[data["Cuenta Origen"]]),
+          values: Object.values(auxiliares[data["cuentaOrigen"]]),
           allowTyping: true,
           filterList: true,
           highlightMatch: true,
@@ -53,7 +56,8 @@ export default function Cambioscxp({ appData, setAppData }) {
       },
     },
     {
-      field: "Cuenta destino",
+      headerName: "Cuenta destino",
+      field: "cuentaDestino",
       cellEditor: "agRichSelectCellEditor",
       cellEditorParams: {
         values: Object.keys(auxiliares),
@@ -63,21 +67,22 @@ export default function Cambioscxp({ appData, setAppData }) {
       },
     },
     {
-      field: "Subcuenta destino",
+      headerName: "Subcuenta destino",
+      field: "subCuentaDestino",
       cellEditor: "agRichSelectCellEditor",
       cellEditorParams: ({ data }) => {
-        if (data["Cuenta destino"] == null) return
+        if (data["cuentaDestino"] == null) return
         return {
-          values: Object.values(auxiliares[data["Cuenta destino"]]),
+          values: Object.values(auxiliares[data["cuentaDestino"]]),
           allowTyping: true,
           filterList: true,
           highlightMatch: true,
         }
       },
     },
-    { field: "Monto", cellDataType: "number" },
+    { headerName: "Monto", field: "monto", cellDataType: "number" },
 
-    { field: "Descripcion" },
+    { headerName: "Descripción", field: "descripcion" },
   ])
 
   const defaultColDef = {
@@ -97,7 +102,10 @@ export default function Cambioscxp({ appData, setAppData }) {
         <button
           className="btn btn-sm"
           onClick={() =>
-            setAppData({ ...appData, cambioscxp: [...appData.cambioscxp, []] })
+            setAppData({
+              ...appData,
+              cambioscxp: [...appData.cambioscxp, { id: generateId() }],
+            })
           }
         >
           Agregar linea

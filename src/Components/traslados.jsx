@@ -4,7 +4,7 @@ import { bancos } from "../../datamodel"
 import { useMemo, useState } from "react"
 import PropTypes from "prop-types"
 import { dataTypeDefinitions } from "../Utils/dataTypeDefs"
-import { processDataFromClipboard } from "../Utils/utils"
+import { generateId, processDataFromClipboard } from "../Utils/utils"
 
 Traslados.propTypes = {
   appData: PropTypes.shape({
@@ -25,11 +25,13 @@ export default function Traslados({ appData, setAppData }) {
   // Column Definitions: Defines the columns to be displayed.
   const [colDefs] = useState([
     {
-      field: "Fecha",
+      headerName: "Fecha",
+      field: "fecha",
       cellEditor: "agDateStringCellEditor",
     },
     {
-      field: "Banco Origen",
+      headerName: "Banco Origen",
+      field: "bancoOrigen",
       cellEditor: "agRichSelectCellEditor",
 
       cellEditorParams: {
@@ -40,7 +42,8 @@ export default function Traslados({ appData, setAppData }) {
       },
     },
     {
-      field: "Banco Destino",
+      headerName: "Banco Destino",
+      field: "bancoDestino",
       cellEditor: "agRichSelectCellEditor",
 
       cellEditorParams: {
@@ -51,7 +54,8 @@ export default function Traslados({ appData, setAppData }) {
       },
     },
     {
-      field: "Monto",
+      headerName: "Monto",
+      field: "monto",
       cellDataType: "number",
       valueFormatter: (p) =>
         p.value > 0
@@ -61,7 +65,8 @@ export default function Traslados({ appData, setAppData }) {
           : p.value,
     },
     {
-      field: "Tipo de salida",
+      headerName: "Tipo de salida",
+      field: "tipoSalida",
       cellEditor: "agRichSelectCellEditor",
       cellEditorParams: {
         values: ["Transferencia", "Cheque"],
@@ -70,8 +75,8 @@ export default function Traslados({ appData, setAppData }) {
         highlightMatch: true,
       },
     },
-    { field: "N Referencia" },
-    { field: "Descripcion" },
+    { headerName: "N Referencia", field: "nReferencia" },
+    { headerName: "Descripcion", field: "descripcion" },
   ])
 
   const defaultColDef = {
@@ -91,7 +96,10 @@ export default function Traslados({ appData, setAppData }) {
         <button
           className="btn btn-sm"
           onClick={() =>
-            setAppData({ ...appData, traslados: [...appData.traslados, []] })
+            setAppData({
+              ...appData,
+              traslados: [...appData.traslados, { id: generateId() }],
+            })
           }
         >
           Agregar linea

@@ -16,6 +16,7 @@ import { generateId } from "./utils"
 /**
  * Represents a salida transaction.
  * @typedef {Object} Salida
+ * @property {string} id - The unique identifier.
  * @property {string} fecha - The date of the salida.
  * @property {string} cuentaOrigen - The source account of the salida.
  * @property {string} subCuentaOrigen - The sub-account of the source account.
@@ -29,18 +30,20 @@ import { generateId } from "./utils"
 /**
  * Represents a traslado transaction.
  * @typedef {Object} Traslado
+ * @property {string} id - The unique identifier.
  * @property {string} fecha - The date of the traslado.
  * @property {string} bancoOrigen - The origin bank for the traslado.
  * @property {string} bancoDestino - The destination bank for the traslado.
  * @property {number} monto - The amount of the traslado.
  * @property {string} tipoSalida - The type of the traslado.
  * @property {string} nReferencia - The reference number for the traslado.
- * @property {string} Descripcion - A description of the traslado.
+ * @property {string} descripcion - A description of the traslado.
  */
 
 /**
  * Represents a liquidacion transaction.
  * @typedef {Object} Liquidacion
+ * @property {string} id - The unique identifier.
  * @property {string} bancoDestino - The destination bank for the liquidacion.
  * @property {string} fecha - The date of the liquidacion.
  * @property {number} montoBanco - The amount in the bank for the liquidacion.
@@ -68,6 +71,7 @@ import { generateId } from "./utils"
 /**
  * Represents a cambio CXP transaction.
  * @typedef {Object} CambioCXP
+ * @property {string} id - The unique identifier.
  * @property {string} fecha - The date of the cambio CXP.
  * @property {string} cuentaOrigen - The source account of the cambio CXP.
  * @property {string} subCuentaOrigen - The sub-account of the source account.
@@ -106,17 +110,19 @@ export const data = {
 
   traslados: [
     {
+      id: generateId(),
       fecha: null,
       bancoOrigen: "",
       bancoDestino: "",
       monto: null,
       tipoSalida: "",
       nReferencia: "",
-      Descripcion: "",
+      descripcion: "",
     },
   ],
   liquidaciones: [
     {
+      id: generateId(),
       bancoDestino: "",
       fecha: null,
       montoBanco: null,
@@ -142,6 +148,7 @@ export const data = {
   ],
   cambioscxp: [
     {
+      id: generateId(),
       fecha: null,
       cuentaOrigen: "",
       subCuentaOrigen: "",

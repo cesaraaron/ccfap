@@ -1,15 +1,37 @@
 import { data } from "../Utils/dataShape"
 import PropTypes from "prop-types"
 import { deepCopy } from "../Utils/utils"
-import { generateDepositosExcel } from "../Utils/generateExcel"
+import {
+  generateCXCExcel,
+  generateCXPExcel,
+  generateDepositosExcel,
+  generateLiqExcel,
+  generateSalidasExcel,
+  generateTrasladoExcel,
+} from "../Utils/generateExcel"
+import { generateZip } from "../Utils/generateZip"
 
 export const ActionButtons = ({ setAppData, appData }) => {
   return (
     <div className="flex  justify-center">
       <button
         className="btn btn-ghost btn-sm"
-        onClick={() => {
-          generateDepositosExcel(appData.depositos)
+        onClick={async () => {
+          const depositos = await generateDepositosExcel(appData.depositos)
+          const cambioscxp = await generateCXPExcel(appData.cambioscxp)
+          const cambioscxc = await generateCXCExcel(appData.cambioscxc)
+          const liquidaciones = await generateLiqExcel(appData.liquidaciones)
+          const salidas = await generateSalidasExcel(appData.salidas)
+          const traslados = await generateTrasladoExcel(appData.traslados)
+
+          generateZip({
+            cambioscxp,
+            depositos,
+            cambioscxc,
+            liquidaciones,
+            salidas,
+            traslados,
+          })
         }}
       >
         Generar excel
