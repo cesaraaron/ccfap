@@ -74,9 +74,21 @@ export default function Traslados({ appData, setAppData }) {
         filterList: true,
         highlightMatch: true,
       },
+      tooltipValueGetter: () =>
+        "Puede ser cheque o transferencia, puede dejarse en blanco",
     },
-    { headerName: "N Referencia", field: "nReferencia" },
-    { headerName: "Descripcion", field: "descripcion" },
+    {
+      headerName: "N Referencia",
+      field: "nReferencia",
+      tooltipValueGetter: () =>
+        "Numero de cheque o transferencia, puede dejarse en blanco",
+    },
+    {
+      headerName: "Descripcion",
+      field: "descripcion",
+      tooltipValueGetter: () =>
+        "Descripcion del traslado bancario, puede dejarse en blanco",
+    },
   ])
 
   const defaultColDef = {
@@ -117,6 +129,7 @@ export default function Traslados({ appData, setAppData }) {
           cellSelection={cellSelection}
           dataTypeDefinitions={dataTypeDefinitions}
           suppressMovableColumns={true}
+          tooltipShowDelay={200}
           processDataFromClipboard={(p) =>
             processDataFromClipboard(p, (newRows) => {
               setAppData({

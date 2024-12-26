@@ -82,7 +82,12 @@ export default function Cambioscxp({ appData, setAppData }) {
     },
     { headerName: "Monto", field: "monto", cellDataType: "number" },
 
-    { headerName: "Descripción", field: "descripcion" },
+    {
+      headerName: "Descripción",
+      field: "descripcion",
+      tooltipValueGetter: () =>
+        "Descripcion del cambio de cuenta, puede dejarse en blanco",
+    },
   ])
 
   const defaultColDef = {
@@ -123,6 +128,7 @@ export default function Cambioscxp({ appData, setAppData }) {
           cellSelection={cellSelection}
           dataTypeDefinitions={dataTypeDefinitions}
           suppressMovableColumns={true}
+          tooltipShowDelay={200}
           processDataFromClipboard={(p) =>
             processDataFromClipboard(p, (newRows) => {
               setAppData({

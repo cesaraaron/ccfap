@@ -68,6 +68,7 @@ export default function Salidas({ appData, setAppData }) {
         filterList: true,
         highlightMatch: true,
       },
+      flex: 1.5,
     },
     {
       headerName: "Monto",
@@ -90,15 +91,21 @@ export default function Salidas({ appData, setAppData }) {
         filterList: true,
         highlightMatch: true,
       },
+      tooltipValueGetter: () =>
+        "Puede ser cheque o transferencia, puede dejarse en blanco",
     },
     {
       headerName: "N Cheque",
       field: "nCheque",
       cellDataType: "number",
+      tooltipValueGetter: () =>
+        "Numero de cheque o transferencia, puede dejarse en blanco",
     },
     {
       headerName: "Descripcion",
       field: "descripcion",
+      tooltipValueGetter: () =>
+        "Descripcion de la salida, puede dejarse en blanco",
     },
   ])
 
@@ -121,7 +128,6 @@ export default function Salidas({ appData, setAppData }) {
       appData.salidas,
     )
     setAppData({ ...appData, cambioscxc: [...updatedCreditosFA] })
-    // console.log("appData: ", appData)
   }
 
   return (
@@ -153,6 +159,7 @@ export default function Salidas({ appData, setAppData }) {
           dataTypeDefinitions={dataTypeDefinitions}
           suppressMovableColumns={true}
           onCellValueChanged={onCellValueChanged}
+          tooltipShowDelay={200}
           processDataFromClipboard={(p) =>
             processDataFromClipboard(p, (newRows) => {
               setAppData({

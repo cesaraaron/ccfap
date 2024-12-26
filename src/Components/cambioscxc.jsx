@@ -99,6 +99,8 @@ export default function Cambioscxc({ appData, setAppData }) {
       headerName: "Descripción",
       field: "descripcion",
       flex: 1.5,
+      tooltipValueGetter: () =>
+        "Descripcion del cambio de cuenta, puede dejarse en blanco",
     },
   ])
 
@@ -140,6 +142,7 @@ export default function Cambioscxc({ appData, setAppData }) {
           cellSelection={cellSelection}
           dataTypeDefinitions={dataTypeDefinitions}
           suppressMovableColumns={true}
+          tooltipShowDelay={200}
           processDataFromClipboard={(p) =>
             processDataFromClipboard(p, (newRows) => {
               setAppData({

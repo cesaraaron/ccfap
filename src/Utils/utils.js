@@ -81,8 +81,8 @@ export const generateId = () => {
   return String(Math.round(Math.random() * 1000000))
 }
 
-export const hasAnyChar = (str) => {
-  return typeof str === "string" && /./.test(str)
+export const hasAnyChar = (str = "") => {
+  return /./.test(str)
 }
 
 export const hasFAInIt = (str) => {

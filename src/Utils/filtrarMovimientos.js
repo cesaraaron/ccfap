@@ -167,11 +167,15 @@ export const filterInvalidLiq = (data) => {
 
   data.forEach((item) => {
     const obj = { ...item }
-    if (isNaN(item.isvComisiones)) obj.isvComisiones = 0
-    if (isNaN(item.comisiones)) obj.comisiones = 0
-    if (isNaN(item.retencionISR)) obj.retencionISR = 0
-    if (isNaN(item.retencionISV)) obj.retencionISV = 0
-    if (isNaN(item.referencia)) obj.referencia = 0
+    if (item.isvComisiones == null || item.isvComisiones == undefined)
+      obj.isvComisiones = 0
+    if (item.comisiones == null || item.comisiones == undefined)
+      obj.comisiones = 0
+    if (item.retencionISR == null || item.retencionISR == undefined)
+      obj.retencionISR = 0
+    if (item.retencionISV == null || item.retencionISV == undefined)
+      obj.retencionISV = 0
+    if (!hasAnyChar(item.referencia)) obj.referencia = 0
 
     filledData.push(obj)
   })
@@ -218,6 +222,7 @@ export const filterInvalidLiq = (data) => {
       return true
     },
   )
+
   return filteredData
 }
 
@@ -289,7 +294,7 @@ export const filterInvalidTraslados = (data) => {
     if (obj.tipoSalida !== "Cheque" && obj.tipoSalida !== "Transferencia")
       obj.tipoSalida = "Transferencia"
 
-    if (isNaN(obj.nReferencia)) obj.nReferencia = 0
+    if (!hasAnyChar(obj.nReferencia)) obj.nReferencia = 0
 
     if (!hasAnyChar(item.descripcion)) obj.descripcion = "0"
 

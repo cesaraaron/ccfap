@@ -10,7 +10,7 @@ import {
   generateTrasladoExcel,
 } from "../Utils/generateExcel"
 import { generateZip } from "../Utils/generateZip"
-import { useCallback, useEffect, useState } from "react"
+import { useCallback, useState } from "react"
 
 export const ActionButtons = ({ setAppData, appData }) => {
   const [showAlert, setShowAlert] = useState(false)
@@ -99,17 +99,6 @@ const ErrorAlert = ({ showAlert, setShowAlert }) => {
   const handleClose = useCallback(() => {
     setShowAlert(false)
   }, [setShowAlert]) // Dependency added here
-
-  useEffect(() => {
-    // Automatically close the alert after 8 seconds
-    if (showAlert) {
-      const timer = setTimeout(() => {
-        handleClose()
-      }, 8000)
-
-      return () => clearTimeout(timer) // Cleanup the timer on component unmount
-    }
-  }, [showAlert, handleClose])
 
   return (
     <div className="fixed top-8 z-50 duration-300" onClick={handleClose}>

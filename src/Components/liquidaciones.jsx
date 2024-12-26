@@ -35,6 +35,9 @@ export default function Liquidaciones({ appData, setAppData }) {
         filterList: true,
         highlightMatch: true,
       },
+      tooltipValueGetter: () =>
+        "Banco donde esta la liquidacion, casi siempre es Banco CXC Tesoreria",
+      flex: 1.5,
     },
     {
       headerName: "Fecha",
@@ -51,6 +54,7 @@ export default function Liquidaciones({ appData, setAppData }) {
               minimumFractionDigits: 2,
             }).format(p.value)
           : p.value,
+      tooltipValueGetter: () => "Monto que pago el banco",
     },
     {
       headerName: "Comisiones",
@@ -62,17 +66,8 @@ export default function Liquidaciones({ appData, setAppData }) {
               minimumFractionDigits: 2,
             }).format(p.value)
           : p.value,
-    },
-    {
-      headerName: "ISV Comisiones",
-      field: "isvComisiones",
-      cellDataType: "number",
-      valueFormatter: (p) =>
-        p.value > 0
-          ? new Intl.NumberFormat("en-EN", {
-              minimumFractionDigits: 2,
-            }).format(p.value)
-          : p.value,
+      tooltipValueGetter: () =>
+        "Comisiones de la liquidacion, si existen, valor puede dejarse en blanco",
     },
     {
       headerName: "Retencion ISR",
@@ -84,6 +79,38 @@ export default function Liquidaciones({ appData, setAppData }) {
               minimumFractionDigits: 2,
             }).format(p.value)
           : p.value,
+      tooltipValueGetter: () =>
+        "Devolucion ISV, si existe, puede dejarse en blanco",
+    },
+    {
+      headerName: "Banco pertenece",
+      field: "bancoPertenece",
+      cellEditor: "agRichSelectCellEditor",
+
+      tooltipValueGetter: () =>
+        "Banco al que pertenece la liquidacion, Atlantida, BAC etc.",
+
+      cellEditorParams: {
+        values: Object.values(bancos),
+        allowTyping: true,
+        filterList: true,
+        highlightMatch: true,
+      },
+      flex: 1.5,
+    },
+    {
+      headerName: "ISV Comisiones",
+      field: "isvComisiones",
+      cellDataType: "number",
+      valueFormatter: (p) =>
+        p.value > 0
+          ? new Intl.NumberFormat("en-EN", {
+              minimumFractionDigits: 2,
+            }).format(p.value)
+          : p.value,
+
+      tooltipValueGetter: () =>
+        "ISV de las comisiones, si existen, valor puede dejarse en blanco",
     },
     {
       headerName: "Retencion ISV",
@@ -95,19 +122,14 @@ export default function Liquidaciones({ appData, setAppData }) {
               minimumFractionDigits: 2,
             }).format(p.value)
           : p.value,
-    },
-    { headerName: "Referencia", field: "referencia" },
-    {
-      headerName: "Banco pertenece",
-      field: "bancoPertenece",
-      cellEditor: "agRichSelectCellEditor",
 
-      cellEditorParams: {
-        values: Object.values(bancos),
-        allowTyping: true,
-        filterList: true,
-        highlightMatch: true,
-      },
+      tooltipValueGetter: () => "Dejar en blanco, no se usa en Honduras",
+    },
+    {
+      headerName: "Referencia",
+      field: "referencia",
+      tooltipValueGetter: () =>
+        "Referencia de la liquidacion, puede dejarse en blanco",
     },
   ])
 
@@ -149,6 +171,7 @@ export default function Liquidaciones({ appData, setAppData }) {
           cellSelection={cellSelection}
           dataTypeDefinitions={dataTypeDefinitions}
           suppressMovableColumns={true}
+          tooltipShowDelay={200}
           processDataFromClipboard={(p) =>
             processDataFromClipboard(p, (newRows) => {
               setAppData({

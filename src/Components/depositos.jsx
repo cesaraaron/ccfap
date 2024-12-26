@@ -83,9 +83,19 @@ export default function Depositos({ appData, setAppData }) {
             }).format(p.value)
           : p.value,
     },
-    { headerName: "Descripcion", field: "descripcion" },
+    {
+      headerName: "Descripcion",
+      field: "descripcion",
+      tooltipValueGetter: () =>
+        "Descripcion del deposito, puede dejarse en blanco",
+    },
 
-    { headerName: "Referencia", field: "referencia" },
+    {
+      headerName: "Referencia",
+      field: "referencia",
+      tooltipValueGetter: () =>
+        "Referencia del deposito, puede dejarse en blanco",
+    },
   ])
 
   const defaultColDef = useMemo(
@@ -157,6 +167,7 @@ export default function Depositos({ appData, setAppData }) {
           suppressMovableColumns={true}
           onCellValueChanged={onCellValueChanged}
           statusBar={statusBar}
+          tooltipShowDelay={200}
           processDataFromClipboard={(p) =>
             processDataFromClipboard(p, (newRows) => {
               setAppData({
