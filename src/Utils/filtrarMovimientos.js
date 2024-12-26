@@ -15,41 +15,48 @@ import { isValidDate, hasAnyChar } from "./utils"
  * @returns {Array<import('./dataShape').Deposito>}  - An array of objects containing credit information.
  */
 export const filterInvalidDeposits = (data) => {
-  return data.filter(
+  const filledData = []
+
+  data.forEach((item) => {
+    const obj = { ...item }
+    if (!hasAnyChar(item.descripcion)) obj.descripcion = "0"
+
+    if (!hasAnyChar(item.referencia)) obj.referencia = 0
+
+    filledData.push(obj)
+  })
+
+  const filteredData = filledData.filter(
     ({
       fecha,
+      cuentaOrigen,
+      subCuentaOrigen,
       monto,
       banco,
-      cuentaOrigen,
-      descripcion = "0",
-      subCuentaOrigen,
-      referencia = 0,
+      descripcion,
+      referencia,
     }) => {
-      if (
-        isValidDate(fecha) &&
-        !isNaN(monto) &&
-        monto > 0 &&
-        hasAnyChar(cuentaOrigen) &&
-        hasAnyChar(subCuentaOrigen) &&
-        hasAnyChar(banco) &&
-        hasAnyChar(descripcion) &&
-        referencia !== undefined
-      ) {
-        if (!depositos.includes(cuentaOrigen)) return false
+      if (!isValidDate(fecha)) return false
 
-        const auxiliaresValues = Object.values(auxiliares[cuentaOrigen])
+      if (!depositos.includes(cuentaOrigen)) return false
 
-        if (!auxiliaresValues.includes(subCuentaOrigen)) return false
+      const auxiliaresValues = Object.values(auxiliares[cuentaOrigen])
 
-        const bancoValues = Object.values(bancos)
+      if (!auxiliaresValues.includes(subCuentaOrigen)) return false
 
-        if (!bancoValues.includes(banco)) return false
+      if (isNaN(monto)) return false
 
-        return true
-      }
-      return false
+      if (!Object.values(bancos).includes(banco)) return false
+
+      if (!hasAnyChar(descripcion)) return false
+
+      if (referencia == undefined) return false
+
+      return true
     },
   )
+
+  return filteredData
 }
 
 /**
@@ -58,45 +65,47 @@ export const filterInvalidDeposits = (data) => {
  * @returns {Array<import('./dataShape').CambioCXP>}  - An array of objects containing credit information.
  */
 export const filterInvalidCXP = (data) => {
-  return data.filter(
+  const filledData = []
+
+  data.forEach((item) => {
+    const obj = { ...item }
+    if (!hasAnyChar(item.descripcion)) obj.descripcion = "0"
+
+    filledData.push(obj)
+  })
+
+  const filteredData = filledData.filter(
     ({
       fecha,
-      monto,
       cuentaOrigen,
       subCuentaOrigen,
       cuentaDestino,
       subCuentaDestino,
-      descripcion = "0",
-      referencia = 0,
+      monto,
+      descripcion,
     }) => {
-      if (
-        isValidDate(fecha) &&
-        !isNaN(monto) &&
-        monto > 0 &&
-        hasAnyChar(cuentaOrigen) &&
-        hasAnyChar(subCuentaOrigen) &&
-        hasAnyChar(cuentaDestino) &&
-        hasAnyChar(subCuentaDestino) &&
-        hasAnyChar(descripcion) &&
-        referencia !== undefined
-      ) {
-        if (!cxp.includes(cuentaOrigen)) return false
+      if (!isValidDate(fecha)) return false
 
-        const auxiliaresValues = Object.values(auxiliares[cuentaOrigen])
+      if (!cxp.includes(cuentaOrigen)) return false
 
-        if (!auxiliaresValues.includes(subCuentaOrigen)) return false
+      const auxiliaresValues = Object.values(auxiliares[cuentaOrigen])
 
-        if (mayores[cuentaDestino] == undefined) return false
+      if (!auxiliaresValues.includes(subCuentaOrigen)) return false
 
-        const subCuentaDestinoValues = Object.values(auxiliares[cuentaDestino])
+      if (mayores[cuentaDestino] == undefined) return false
 
-        if (!subCuentaDestinoValues.includes(subCuentaDestino)) return false
+      const subCuentaDestinoValues = Object.values(auxiliares[cuentaDestino])
 
-        return true
-      }
-      return false
+      if (!subCuentaDestinoValues.includes(subCuentaDestino)) return false
+
+      if (isNaN(monto)) return false
+
+      if (!hasAnyChar(descripcion)) return false
+
+      return true
     },
   )
+  return filteredData
 }
 
 /**
@@ -105,45 +114,47 @@ export const filterInvalidCXP = (data) => {
  * @returns {Array<import('./dataShape').CambioCXC>}
  */
 export const filterInvalidCXC = (data) => {
-  return data.filter(
+  const filledData = []
+
+  data.forEach((item) => {
+    const obj = { ...item }
+    if (!hasAnyChar(item.descripcion)) obj.descripcion = "0"
+
+    filledData.push(obj)
+  })
+
+  const filteredData = filledData.filter(
     ({
       fecha,
-      monto,
       cuentaOrigen,
       subCuentaOrigen,
       cuentaDestino,
       subCuentaDestino,
-      descripcion = "0",
-      referencia = 0,
+      monto,
+      descripcion,
     }) => {
-      if (
-        isValidDate(fecha) &&
-        !isNaN(monto) &&
-        monto > 0 &&
-        hasAnyChar(cuentaOrigen) &&
-        hasAnyChar(subCuentaOrigen) &&
-        hasAnyChar(cuentaDestino) &&
-        hasAnyChar(subCuentaDestino) &&
-        hasAnyChar(descripcion) &&
-        referencia !== undefined
-      ) {
-        if (!cxc.includes(cuentaOrigen)) return false
+      if (!isValidDate(fecha)) return false
 
-        const auxiliaresValues = Object.values(auxiliares[cuentaOrigen])
+      if (!cxc.includes(cuentaOrigen)) return false
 
-        if (!auxiliaresValues.includes(subCuentaOrigen)) return false
+      const auxiliaresValues = Object.values(auxiliares[cuentaOrigen])
 
-        if (mayores[cuentaDestino] == undefined) return false
+      if (!auxiliaresValues.includes(subCuentaOrigen)) return false
 
-        const subCuentaDestinoValues = Object.values(auxiliares[cuentaDestino])
+      if (mayores[cuentaDestino] == undefined) return false
 
-        if (!subCuentaDestinoValues.includes(subCuentaDestino)) return false
+      const subCuentaDestinoValues = Object.values(auxiliares[cuentaDestino])
 
-        return true
-      }
-      return false
+      if (!subCuentaDestinoValues.includes(subCuentaDestino)) return false
+
+      if (isNaN(monto)) return false
+
+      if (!hasAnyChar(descripcion)) return false
+
+      return true
     },
   )
+  return filteredData
 }
 
 /**
@@ -152,7 +163,20 @@ export const filterInvalidCXC = (data) => {
  * @returns {Array<import('./dataShape').Liquidacion>}
  */
 export const filterInvalidLiq = (data) => {
-  const filteredData = data.filter(
+  const filledData = []
+
+  data.forEach((item) => {
+    const obj = { ...item }
+    if (isNaN(item.isvComisiones)) obj.isvComisiones = 0
+    if (isNaN(item.comisiones)) obj.comisiones = 0
+    if (isNaN(item.retencionISR)) obj.retencionISR = 0
+    if (isNaN(item.retencionISV)) obj.retencionISV = 0
+    if (isNaN(item.referencia)) obj.referencia = 0
+
+    filledData.push(obj)
+  })
+
+  const filteredData = filledData.filter(
     ({
       bancoDestino,
       fecha,
@@ -161,7 +185,7 @@ export const filterInvalidLiq = (data) => {
       isvComisiones,
       retencionISR,
       retencionISV,
-      referencia = 0,
+      referencia,
       bancoPertenece,
     }) => {
       if (!Object.values(bancos).includes(bancoDestino)) {
@@ -203,7 +227,21 @@ export const filterInvalidLiq = (data) => {
  * @returns {Array<import('./dataShape').Salida>}  - An array of objects containing credit information.
  */
 export const filterInvalidSalidas = (data) => {
-  const dataFiltered = data.filter(
+  const filledData = []
+
+  data.forEach((item) => {
+    const obj = { ...item }
+    if (obj.tipoSalida !== "Cheque" && obj.tipoSalida !== "Transferencia")
+      obj.tipoSalida = "Transferencia"
+
+    if (!hasAnyChar(item.nCheque)) obj.nCheque = 0
+
+    if (!hasAnyChar(item.descripcion)) obj.descripcion = "0"
+
+    filledData.push(obj)
+  })
+
+  const dataFiltered = filledData.filter(
     ({
       fecha,
       cuentaOrigen,
@@ -244,7 +282,21 @@ export const filterInvalidSalidas = (data) => {
  * @returns {Array<import('./dataShape').Traslado>}
  */
 export const filterInvalidTraslados = (data) => {
-  const filteredData = data.filter(
+  const filledData = []
+
+  data.forEach((item) => {
+    const obj = { ...item }
+    if (obj.tipoSalida !== "Cheque" && obj.tipoSalida !== "Transferencia")
+      obj.tipoSalida = "Transferencia"
+
+    if (isNaN(obj.nReferencia)) obj.nReferencia = 0
+
+    if (!hasAnyChar(item.descripcion)) obj.descripcion = "0"
+
+    filledData.push(obj)
+  })
+
+  const filteredData = filledData.filter(
     ({
       fecha,
       bancoOrigen,
