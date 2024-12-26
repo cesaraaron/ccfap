@@ -4,10 +4,11 @@ import Depositos from "./depositos"
 import Liquidaciones from "./liquidaciones"
 import Salidas from "./salidas"
 import Traslados from "./traslados"
+import PropTypes from "prop-types"
 
 const LeftPanel = (props) => {
   return (
-    <div>
+    <div className="flex">
       <div role="tablist" className="tabs tabs-sm tabs-lifted w-full h-full">
         <input
           type="radio"
@@ -71,8 +72,32 @@ const LeftPanel = (props) => {
           <Cambioscxp {...props} />
         </div>
       </div>
+      <button
+        className="btn btn-xs btn-square"
+        onClick={() => props.setShowVisualizador(!props.showVisualizador)}
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="h-6 w-6"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+            d="M4 6h16M4 12h16m-7 6h7"
+          />
+        </svg>
+      </button>
     </div>
   )
 }
 
 export default LeftPanel
+
+LeftPanel.propTypes = {
+  setShowVisualizador: PropTypes.func.isRequired,
+  showVisualizador: PropTypes.bool.isRequired, // Assuming it's a boolean
+}
