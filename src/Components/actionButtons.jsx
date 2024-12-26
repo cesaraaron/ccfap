@@ -10,8 +10,11 @@ import {
   generateTrasladoExcel,
 } from "../Utils/generateExcel"
 import { generateZip } from "../Utils/generateZip"
+import { useCallback, useEffect, useState } from "react"
 
 export const ActionButtons = ({ setAppData, appData }) => {
+  const [showAlert, setShowAlert] = useState(false)
+
   return (
     <div className="flex  justify-center">
       <button
@@ -23,6 +26,18 @@ export const ActionButtons = ({ setAppData, appData }) => {
           const liquidaciones = await generateLiqExcel(appData.liquidaciones)
           const salidas = await generateSalidasExcel(appData.salidas)
           const traslados = await generateTrasladoExcel(appData.traslados)
+
+          if (
+            depositos == undefined &&
+            cambioscxp == undefined &&
+            cambioscxc == undefined &&
+            liquidaciones == undefined &&
+            salidas == undefined &&
+            traslados == undefined
+          ) {
+            setShowAlert(true)
+            return
+          }
 
           generateZip({
             cambioscxp,
@@ -68,6 +83,9 @@ export const ActionButtons = ({ setAppData, appData }) => {
           </div>
         </div>
       </dialog>
+      {showAlert && (
+        <ErrorAlert showAlert={showAlert} setShowAlert={setShowAlert} />
+      )}
     </div>
   )
 }
@@ -75,4 +93,59 @@ export const ActionButtons = ({ setAppData, appData }) => {
 ActionButtons.propTypes = {
   appData: PropTypes.object.isRequired,
   setAppData: PropTypes.func.isRequired,
+}
+
+const ErrorAlert = ({ showAlert, setShowAlert }) => {
+  const handleClose = useCallback(() => {
+    setShowAlert(false)
+  }, [setShowAlert]) // Dependency added here
+
+  useEffect(() => {
+    // Automatically close the alert after 8 seconds
+    if (showAlert) {
+      const timer = setTimeout(() => {
+        handleClose()
+      }, 8000)
+
+      return () => clearTimeout(timer) // Cleanup the timer on component unmount
+    }
+  }, [showAlert, handleClose])
+
+  return (
+    <div className="fixed top-8 z-50 duration-300" onClick={handleClose}>
+      {showAlert && (
+        <div role="alert" className="alert shadow-lg">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            className="stroke-info h-6 w-6 shrink-0"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+            ></path>
+          </svg>
+          <div>
+            <div className="text-xs">
+              Sin informacion para exportar o los movimientos son invalidos.
+            </div>
+          </div>
+          <button
+            className="btn btn-sm btn-circle btn-ghost"
+            onClick={handleClose}
+          >
+            &times; {/* Close Icon */}
+          </button>
+        </div>
+      )}
+    </div>
+  )
+}
+
+ErrorAlert.propTypes = {
+  showAlert: PropTypes.bool.isRequired, // expecting a boolean
+  setShowAlert: PropTypes.func.isRequired, // expecting a function
 }
