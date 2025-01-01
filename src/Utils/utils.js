@@ -108,8 +108,6 @@ export const getFANameWithString = (str) => {
 }
 
 export const processDataFromClipboard = (params, updateState) => {
-  console.log("params: ", params)
-
   const data = [...params.data]
 
   const emptyLastRow =
@@ -143,9 +141,8 @@ export const processDataFromClipboard = (params, updateState) => {
       })
       rowsToAdd.push(rowObject)
     }
-    params.api.applyTransaction({ add: rowsToAdd })
     updateState(rowsToAdd)
-    // console.log("rowsToAdd: ", rowsToAdd)
+    params.api.applyTransaction({ add: rowsToAdd })
   }
   return data
 }
