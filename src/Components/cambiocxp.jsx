@@ -80,7 +80,24 @@ export default function Cambioscxp({ appData, setAppData }) {
         }
       },
     },
-    { headerName: "Monto", field: "monto", cellDataType: "number" },
+    {
+      headerName: "Monto",
+      field: "monto",
+      cellDataType: "number",
+      valueParser: (params) => {
+        const value =
+          typeof params.newValue === "string"
+            ? params.newValue.trim().replace(",", "")
+            : params.newValue
+        return Number(value)
+      },
+      valueFormatter: (p) =>
+        p.value > 0
+          ? new Intl.NumberFormat("en-EN", {
+              minimumFractionDigits: 2,
+            }).format(p.value)
+          : p.value,
+    },
 
     {
       headerName: "Descripción",

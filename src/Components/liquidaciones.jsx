@@ -48,6 +48,13 @@ export default function Liquidaciones({ appData, setAppData }) {
       headerName: "Monto banco",
       field: "montoBanco",
       cellDataType: "number",
+      valueParser: (params) => {
+        const value =
+          typeof params.newValue === "string"
+            ? params.newValue.trim().replace(",", "")
+            : params.newValue
+        return Number(value)
+      },
       valueFormatter: (p) =>
         p.value > 0
           ? new Intl.NumberFormat("en-EN", {
@@ -60,6 +67,13 @@ export default function Liquidaciones({ appData, setAppData }) {
       headerName: "Comisiones",
       field: "comisiones",
       cellDataType: "number",
+      valueParser: (params) => {
+        const value =
+          typeof params.newValue === "string"
+            ? params.newValue.trim().replace(",", "")
+            : params.newValue
+        return Number(value)
+      },
       valueFormatter: (p) =>
         p.value > 0
           ? new Intl.NumberFormat("en-EN", {
@@ -73,6 +87,13 @@ export default function Liquidaciones({ appData, setAppData }) {
       headerName: "Retencion ISR",
       field: "retencionISR",
       cellDataType: "number",
+      valueParser: (params) => {
+        const value =
+          typeof params.newValue === "string"
+            ? params.newValue.trim().replace(",", "")
+            : params.newValue
+        return Number(value)
+      },
       valueFormatter: (p) =>
         p.value > 0
           ? new Intl.NumberFormat("en-EN", {
@@ -102,6 +123,13 @@ export default function Liquidaciones({ appData, setAppData }) {
       headerName: "ISV Comisiones",
       field: "isvComisiones",
       cellDataType: "number",
+      valueParser: (params) => {
+        const value =
+          typeof params.newValue === "string"
+            ? params.newValue.trim().replace(",", "")
+            : params.newValue
+        return Number(value)
+      },
       valueFormatter: (p) =>
         p.value > 0
           ? new Intl.NumberFormat("en-EN", {
@@ -116,6 +144,13 @@ export default function Liquidaciones({ appData, setAppData }) {
       headerName: "Retencion ISV",
       field: "retencionISV",
       cellDataType: "number",
+      valueParser: (params) => {
+        const value =
+          typeof params.newValue === "string"
+            ? params.newValue.trim().replace(",", "")
+            : params.newValue
+        return Number(value)
+      },
       valueFormatter: (p) =>
         p.value > 0
           ? new Intl.NumberFormat("en-EN", {
