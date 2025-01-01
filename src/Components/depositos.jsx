@@ -4,7 +4,11 @@ import { auxiliares, bancos, depositos } from "../../datamodel"
 import { useMemo, useState } from "react"
 import PropTypes from "prop-types"
 import { dataTypeDefinitions } from "../Utils/dataTypeDefs"
-import { generateId, processDataFromClipboard } from "../Utils/utils"
+import {
+  generateId,
+  objIsEmpty,
+  processDataFromClipboard,
+} from "../Utils/utils"
 import {
   generateCreditosFA,
   synCreditosFA as syncCreditosFA,
@@ -82,7 +86,7 @@ export default function Depositos({ appData, setAppData }) {
           typeof params.newValue === "string"
             ? params.newValue.trim().replace(",", "")
             : params.newValue
-        return Number(value)
+        return Number(value) > 0 ? Number(value) : null
       },
       valueFormatter: (p) =>
         p.value > 0
@@ -143,9 +147,9 @@ export default function Depositos({ appData, setAppData }) {
     return {
       "bg-red-50": (params) => {
         const validDeposits = filterInvalidDeposits([params.data])
-        return (
-          validDeposits.length === 0 && Object.values(params.data).length > 1
-        )
+        return objIsEmpty(params.data)
+          ? false
+          : validDeposits.length === 0 && Object.values(params.data).length > 1
       },
       "bg-green-50": (params) => {
         const validDeposits = filterInvalidDeposits([params.data])

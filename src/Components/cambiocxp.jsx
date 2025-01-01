@@ -4,7 +4,11 @@ import { auxiliares, cxp } from "../../datamodel"
 import { useMemo, useState } from "react"
 import PropTypes from "prop-types"
 import { dataTypeDefinitions } from "../Utils/dataTypeDefs"
-import { generateId, processDataFromClipboard } from "../Utils/utils"
+import {
+  generateId,
+  objIsEmpty,
+  processDataFromClipboard,
+} from "../Utils/utils"
 import { filterInvalidCXP } from "../Utils/filtrarMovimientos"
 
 Cambioscxp.propTypes = {
@@ -90,7 +94,7 @@ export default function Cambioscxp({ appData, setAppData }) {
           typeof params.newValue === "string"
             ? params.newValue.trim().replace(",", "")
             : params.newValue
-        return Number(value)
+        return Number(value) > 0 ? Number(value) : null
       },
       valueFormatter: (p) =>
         p.value > 0
@@ -130,7 +134,9 @@ export default function Cambioscxp({ appData, setAppData }) {
     return {
       "bg-red-50": (params) => {
         const valid = filterInvalidCXP([params.data])
-        return valid.length === 0 && Object.values(params.data).length > 1
+        return objIsEmpty(params.data)
+          ? false
+          : valid.length === 0 && Object.values(params.data).length > 1
       },
       "bg-green-50": (params) => {
         const valid = filterInvalidCXP([params.data])

@@ -11,6 +11,16 @@ export const createDateFromString = (str = "") => {
   return new Date(year, month - 1, day)
 }
 
+export const objIsEmpty = (obj) => {
+  const newObj = { ...obj }
+  newObj.id = ""
+
+  return Object.values(newObj).every(
+    (value) =>
+      value === "" || value === null || value === undefined || value === 0,
+  )
+}
+
 export const isValidDate = (value) => {
   try {
     const [day, month, year] = value.split("/").map(Number)

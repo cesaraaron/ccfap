@@ -121,7 +121,7 @@ export const synCreditosFA = (oldcxc, newcxc, depositos) => {
     (obj) => !mappedNewcxc.has(obj.id) && !mappedDepositos.has(obj.id),
   )
 
-  const result = [...offsetcxc, ...intersectedcxc]
+  const result = [...intersectedcxc, ...offsetcxc]
 
   newcxc.forEach((obj) => {
     if (!mappedOldcxc.has(obj.id)) {
@@ -129,5 +129,5 @@ export const synCreditosFA = (oldcxc, newcxc, depositos) => {
     }
   })
 
-  return result
+  return result.filter((v) => Object.values(v).length > 1)
 }
