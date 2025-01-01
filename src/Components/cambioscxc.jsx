@@ -5,6 +5,7 @@ import { useMemo, useState } from "react"
 import PropTypes from "prop-types"
 import { dataTypeDefinitions } from "../Utils/dataTypeDefs"
 import { generateId, processDataFromClipboard } from "../Utils/utils"
+import { filterInvalidCXC } from "../Utils/filtrarMovimientos"
 
 Cambioscxc.propTypes = {
   appData: PropTypes.shape({
@@ -130,6 +131,19 @@ export default function Cambioscxc({ appData, setAppData }) {
     suppressHeaderContextMenu: true,
   }
 
+  const rowClassRules = useMemo(() => {
+    return {
+      "bg-red-50": (params) => {
+        const valid = filterInvalidCXC([params.data])
+        return valid.length === 0 && Object.values(params.data).length > 1
+      },
+      "bg-green-50": (params) => {
+        const valid = filterInvalidCXC([params.data])
+        return valid.length > 0
+      },
+    }
+  }, [])
+
   return (
     // wrapping container with theme & size
     <div className="flex flex-col">
@@ -178,6 +192,7 @@ export default function Cambioscxc({ appData, setAppData }) {
           suppressMovableColumns={true}
           tooltipShowDelay={200}
           statusBar={statusBar}
+          rowClassRules={rowClassRules}
           processDataFromClipboard={(p) =>
             processDataFromClipboard(p, (newRows) => {
               setAppData({

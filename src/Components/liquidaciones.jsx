@@ -5,6 +5,7 @@ import { useMemo, useState } from "react"
 import PropTypes from "prop-types"
 import { dataTypeDefinitions } from "../Utils/dataTypeDefs"
 import { generateId, processDataFromClipboard } from "../Utils/utils"
+import { filterInvalidLiq } from "../Utils/filtrarMovimientos"
 
 Liquidaciones.propTypes = {
   appData: PropTypes.shape({
@@ -177,6 +178,19 @@ export default function Liquidaciones({ appData, setAppData }) {
     }
   }, [])
 
+  const rowClassRules = useMemo(() => {
+    return {
+      "bg-red-50": (params) => {
+        const valid = filterInvalidLiq([params.data])
+        return valid.length === 0 && Object.values(params.data).length > 1
+      },
+      "bg-green-50": (params) => {
+        const valid = filterInvalidLiq([params.data])
+        return valid.length > 0
+      },
+    }
+  }, [])
+
   const defaultColDef = {
     flex: 1,
     editable: true,
@@ -235,6 +249,7 @@ export default function Liquidaciones({ appData, setAppData }) {
           suppressMovableColumns={true}
           tooltipShowDelay={200}
           statusBar={statusBar}
+          rowClassRules={rowClassRules}
           processDataFromClipboard={(p) =>
             processDataFromClipboard(p, (newRows) => {
               setAppData({

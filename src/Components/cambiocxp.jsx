@@ -5,6 +5,7 @@ import { useMemo, useState } from "react"
 import PropTypes from "prop-types"
 import { dataTypeDefinitions } from "../Utils/dataTypeDefs"
 import { generateId, processDataFromClipboard } from "../Utils/utils"
+import { filterInvalidCXP } from "../Utils/filtrarMovimientos"
 
 Cambioscxp.propTypes = {
   appData: PropTypes.shape({
@@ -125,6 +126,19 @@ export default function Cambioscxp({ appData, setAppData }) {
     suppressHeaderContextMenu: true,
   }
 
+  const rowClassRules = useMemo(() => {
+    return {
+      "bg-red-50": (params) => {
+        const valid = filterInvalidCXP([params.data])
+        return valid.length === 0 && Object.values(params.data).length > 1
+      },
+      "bg-green-50": (params) => {
+        const valid = filterInvalidCXP([params.data])
+        return valid.length > 0
+      },
+    }
+  }, [])
+
   return (
     // wrapping container with theme & size
     <div className="flex flex-col">
@@ -173,6 +187,7 @@ export default function Cambioscxp({ appData, setAppData }) {
           suppressMovableColumns={true}
           tooltipShowDelay={200}
           statusBar={statusBar}
+          rowClassRules={rowClassRules}
           processDataFromClipboard={(p) =>
             processDataFromClipboard(p, (newRows) => {
               setAppData({

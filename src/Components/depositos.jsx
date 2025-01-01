@@ -9,6 +9,7 @@ import {
   generateCreditosFA,
   synCreditosFA as syncCreditosFA,
 } from "../Utils/generateCXC"
+import { filterInvalidDeposits } from "../Utils/filtrarMovimientos"
 
 Depositos.propTypes = {
   appData: PropTypes.shape({
@@ -138,6 +139,21 @@ export default function Depositos({ appData, setAppData }) {
     }
   }, [])
 
+  const rowClassRules = useMemo(() => {
+    return {
+      "bg-red-50": (params) => {
+        const validDeposits = filterInvalidDeposits([params.data])
+        return (
+          validDeposits.length === 0 && Object.values(params.data).length > 1
+        )
+      },
+      "bg-green-50": (params) => {
+        const validDeposits = filterInvalidDeposits([params.data])
+        return validDeposits.length > 0
+      },
+    }
+  }, [])
+
   return (
     // wrapping container with theme & size
     <div className="flex flex-col">
@@ -188,6 +204,7 @@ export default function Depositos({ appData, setAppData }) {
           onCellValueChanged={onCellValueChanged}
           statusBar={statusBar}
           tooltipShowDelay={200}
+          rowClassRules={rowClassRules}
           processDataFromClipboard={(p) =>
             processDataFromClipboard(p, (newRows) => {
               setAppData({

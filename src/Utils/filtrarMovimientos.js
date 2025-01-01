@@ -19,9 +19,11 @@ export const filterInvalidDeposits = (data) => {
 
   data.forEach((item) => {
     const obj = { ...item }
-    if (!hasAnyChar(obj.descripcion)) obj.descripcion = "0"
+    if (!hasAnyChar(obj.descripcion) || obj.descripcion == undefined)
+      obj.descripcion = "0"
 
-    if (!hasAnyChar(obj.referencia)) obj.referencia = 0
+    if (!hasAnyChar(obj.referencia) || obj.referencia == undefined)
+      obj.referencia = 0
 
     filledData.push(obj)
   })
@@ -44,7 +46,7 @@ export const filterInvalidDeposits = (data) => {
 
       if (!auxiliaresValues.includes(subCuentaOrigen)) return false
 
-      if (isNaN(monto)) return false
+      if (monto == 0 || isNaN(monto)) return false
 
       if (!Object.values(bancos).includes(banco)) return false
 
@@ -69,7 +71,8 @@ export const filterInvalidCXP = (data) => {
 
   data.forEach((item) => {
     const obj = { ...item }
-    if (!hasAnyChar(obj.descripcion)) obj.descripcion = "0"
+    if (!hasAnyChar(obj.descripcion) || obj.descripcion == undefined)
+      obj.descripcion = "0"
 
     filledData.push(obj)
   })
@@ -98,7 +101,7 @@ export const filterInvalidCXP = (data) => {
 
       if (!subCuentaDestinoValues.includes(subCuentaDestino)) return false
 
-      if (isNaN(monto)) return false
+      if (monto == 0 || isNaN(monto)) return false
 
       if (!hasAnyChar(descripcion)) return false
 
@@ -118,7 +121,8 @@ export const filterInvalidCXC = (data) => {
 
   data.forEach((item) => {
     const obj = { ...item }
-    if (!hasAnyChar(obj.descripcion)) obj.descripcion = "0"
+    if (!hasAnyChar(obj.descripcion) || obj.descripcion == undefined)
+      obj.descripcion = "0"
 
     filledData.push(obj)
   })
@@ -147,7 +151,7 @@ export const filterInvalidCXC = (data) => {
 
       if (!subCuentaDestinoValues.includes(subCuentaDestino)) return false
 
-      if (isNaN(monto)) return false
+      if (monto == 0 || isNaN(monto)) return false
 
       if (!hasAnyChar(descripcion)) return false
 
@@ -167,15 +171,36 @@ export const filterInvalidLiq = (data) => {
 
   data.forEach((item) => {
     const obj = { ...item }
-    if (obj.isvComisiones == null || obj.isvComisiones == undefined)
-      obj.isvComisiones = 0
-    if (obj.comisiones == null || obj.comisiones == undefined)
+    if (
+      obj.comisiones == null ||
+      obj.comisiones == undefined ||
+      obj.comisiones == 0
+    )
       obj.comisiones = 0
-    if (obj.retencionISR == null || obj.retencionISR == undefined)
+    if (
+      obj.isvComisiones == null ||
+      obj.isvComisiones == undefined ||
+      obj.isvComisiones == 0
+    )
+      obj.isvComisiones = 0
+    if (
+      obj.retencionISR == null ||
+      obj.retencionISR == undefined ||
+      obj.retencionISR == 0
+    )
       obj.retencionISR = 0
-    if (obj.retencionISV == null || obj.retencionISV == undefined)
+    if (
+      obj.retencionISV == null ||
+      obj.retencionISV == undefined ||
+      obj.retencionISV == 0
+    )
       obj.retencionISV = 0
-    if (!hasAnyChar(obj.referencia)) obj.referencia = 0
+    if (
+      !hasAnyChar(obj.referencia) ||
+      obj.referencia == undefined ||
+      obj.referencia == 0
+    )
+      obj.referencia = 0
 
     filledData.push(obj)
   })
@@ -198,7 +223,7 @@ export const filterInvalidLiq = (data) => {
       if (!isValidDate(fecha)) {
         return false
       }
-      if (isNaN(montoBanco)) {
+      if (montoBanco == 0 || isNaN(montoBanco)) {
         return false
       }
       if (isNaN(comisiones)) {
@@ -213,7 +238,7 @@ export const filterInvalidLiq = (data) => {
       if (isNaN(retencionISV)) {
         return false
       }
-      if (referencia === undefined) {
+      if (referencia == undefined) {
         return false
       }
       if (!Object.values(bancos).includes(bancoPertenece)) {
@@ -239,9 +264,10 @@ export const filterInvalidSalidas = (data) => {
     if (obj.tipoSalida !== "Cheque" && obj.tipoSalida !== "Transferencia")
       obj.tipoSalida = "Transferencia"
 
-    if (!hasAnyChar(obj.nCheque)) obj.nCheque = 0
+    if (!hasAnyChar(obj.nCheque) || obj.nCheque == undefined) obj.nCheque = 0
 
-    if (!hasAnyChar(obj.descripcion)) obj.descripcion = "0"
+    if (!hasAnyChar(obj.descripcion) || obj.descripcion == undefined)
+      obj.descripcion = "0"
 
     filledData.push(obj)
   })
@@ -294,9 +320,11 @@ export const filterInvalidTraslados = (data) => {
     if (obj.tipoSalida !== "Cheque" && obj.tipoSalida !== "Transferencia")
       obj.tipoSalida = "Transferencia"
 
-    if (!hasAnyChar(obj.nReferencia)) obj.nReferencia = 0
+    if (!hasAnyChar(obj.nReferencia) || obj.nReferencia == undefined)
+      obj.nReferencia = 0
 
-    if (!hasAnyChar(obj.descripcion)) obj.descripcion = "0"
+    if (!hasAnyChar(obj.descripcion) || obj.descripcion == undefined)
+      obj.descripcion = "0"
 
     filledData.push(obj)
   })

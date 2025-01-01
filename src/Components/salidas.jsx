@@ -6,6 +6,7 @@ import PropTypes from "prop-types"
 import { dataTypeDefinitions } from "../Utils/dataTypeDefs"
 import { generateId, processDataFromClipboard } from "../Utils/utils"
 import { generateAbonosFA, synCreditosFA } from "../Utils/generateCXC"
+import { filterInvalidSalidas } from "../Utils/filtrarMovimientos"
 
 Salidas.propTypes = {
   appData: PropTypes.shape({
@@ -146,6 +147,19 @@ export default function Salidas({ appData, setAppData }) {
     setAppData({ ...appData, cambioscxc: [...updatedCreditosFA] })
   }
 
+  const rowClassRules = useMemo(() => {
+    return {
+      "bg-red-50": (params) => {
+        const valid = filterInvalidSalidas([params.data])
+        return valid.length === 0 && Object.values(params.data).length > 1
+      },
+      "bg-green-50": (params) => {
+        const valid = filterInvalidSalidas([params.data])
+        return valid.length > 0
+      },
+    }
+  }, [])
+
   return (
     // wrapping container with theme & size
     <div className="flex flex-col">
@@ -195,6 +209,7 @@ export default function Salidas({ appData, setAppData }) {
           onCellValueChanged={onCellValueChanged}
           tooltipShowDelay={200}
           statusBar={statusBar}
+          rowClassRules={rowClassRules}
           processDataFromClipboard={(p) =>
             processDataFromClipboard(p, (newRows) => {
               setAppData({

@@ -85,13 +85,6 @@ export const data = {
   depositos: [
     {
       id: generateId(),
-      fecha: null,
-      cuentaOrigen: "",
-      subCuentaOrigen: "",
-      banco: "",
-      monto: null,
-      descripcion: "",
-      referencia: "",
     },
     { id: generateId() },
     { id: generateId() },
@@ -106,14 +99,6 @@ export const data = {
   salidas: [
     {
       id: generateId(),
-      fecha: null,
-      cuentaOrigen: "",
-      subCuentaOrigen: "",
-      banco: "",
-      monto: null,
-      tipoSalida: "",
-      nCheque: null,
-      descripcion: "",
     },
     { id: generateId() },
     { id: generateId() },
@@ -129,13 +114,6 @@ export const data = {
   traslados: [
     {
       id: generateId(),
-      fecha: null,
-      bancoOrigen: "",
-      bancoDestino: "",
-      monto: null,
-      tipoSalida: "",
-      nReferencia: "",
-      descripcion: "",
     },
     { id: generateId() },
     { id: generateId() },
@@ -150,15 +128,6 @@ export const data = {
   liquidaciones: [
     {
       id: generateId(),
-      bancoDestino: "",
-      fecha: null,
-      montoBanco: null,
-      comisiones: null,
-      isvComisiones: null,
-      retencionISR: null,
-      retencionISV: null,
-      referencia: null,
-      bancoPertenece: "",
     },
     { id: generateId() },
     { id: generateId() },
@@ -173,13 +142,6 @@ export const data = {
   cambioscxc: [
     {
       id: generateId(),
-      fecha: null,
-      cuentaOrigen: "",
-      subCuentaOrigen: "",
-      cuentaDestino: "",
-      subCuentaDestino: "",
-      monto: null,
-      descripcion: "",
     },
     { id: generateId() },
     { id: generateId() },
@@ -194,13 +156,6 @@ export const data = {
   cambioscxp: [
     {
       id: generateId(),
-      fecha: null,
-      cuentaOrigen: "",
-      subCuentaOrigen: "",
-      cuentaDestino: "",
-      subCuentaDestino: "",
-      monto: null,
-      descripcion: "",
     },
     { id: generateId() },
     { id: generateId() },
