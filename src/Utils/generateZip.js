@@ -8,7 +8,7 @@ export const generateZip = (blobs) => {
   const zip = new JSZip()
 
   if (blobs.depositos !== undefined) {
-    zip.file("Depositos.xlsx", blobs.depositos)
+    zip.file("Depositos bancarios.xlsx", blobs.depositos)
   }
 
   if (blobs.cambioscxp !== undefined) {
@@ -19,13 +19,13 @@ export const generateZip = (blobs) => {
     zip.file("CambiosCXC.xlsx", blobs.cambioscxc)
   }
   if (blobs.liquidaciones !== undefined) {
-    zip.file("Liquidaciones.xlsx", blobs.liquidaciones)
+    zip.file("Liquidaciones bancarias.xlsx", blobs.liquidaciones)
   }
   if (blobs.salidas !== undefined) {
-    zip.file("Salidas.xlsx", blobs.salidas)
+    zip.file("Transferencias bancarias.xlsx", blobs.salidas)
   }
   if (blobs.traslados !== undefined) {
-    zip.file("Traslados.xlsx", blobs.traslados)
+    zip.file("Traslados bancarios.xlsx", blobs.traslados)
   }
 
   zip.generateAsync({ type: "blob" }).then((content) => {

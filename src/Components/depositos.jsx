@@ -120,7 +120,6 @@ export default function Depositos({ appData, setAppData }) {
       appData.depositos,
     )
     setAppData({ ...appData, cambioscxc: [...updatedCreditosFA] })
-    // console.log("appData: ", appData)
   }
 
   const statusBar = useMemo(() => {

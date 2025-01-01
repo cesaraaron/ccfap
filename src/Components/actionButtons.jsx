@@ -75,9 +75,9 @@ export const ActionButtons = ({ setAppData, appData }) => {
                     setAppData(deepCopy(data))
                   }}
                 >
-                  Si
+                  Aceptar
                 </button>
-                <button className="btn btn-sm">No</button>
+                <button className="btn btn-sm">Cancelar</button>
               </div>
             </form>
           </div>

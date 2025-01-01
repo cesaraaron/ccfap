@@ -1560,6 +1560,12 @@ export const auxiliares = {
     2: "Impuesto Ventas",
   },
   "CXC Empleados": {},
+  "CXC Retenciones": {
+    1: "Bancos",
+    2: "Ventas",
+    3: "Banco ISR",
+    4: "Banco ISV",
+  },
 }
 
 export const mayores = {

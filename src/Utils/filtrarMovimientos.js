@@ -19,9 +19,9 @@ export const filterInvalidDeposits = (data) => {
 
   data.forEach((item) => {
     const obj = { ...item }
-    if (!hasAnyChar(item.descripcion)) obj.descripcion = "0"
+    if (!hasAnyChar(obj.descripcion)) obj.descripcion = "0"
 
-    if (!hasAnyChar(item.referencia)) obj.referencia = 0
+    if (!hasAnyChar(obj.referencia)) obj.referencia = 0
 
     filledData.push(obj)
   })
@@ -69,7 +69,7 @@ export const filterInvalidCXP = (data) => {
 
   data.forEach((item) => {
     const obj = { ...item }
-    if (!hasAnyChar(item.descripcion)) obj.descripcion = "0"
+    if (!hasAnyChar(obj.descripcion)) obj.descripcion = "0"
 
     filledData.push(obj)
   })
@@ -118,7 +118,7 @@ export const filterInvalidCXC = (data) => {
 
   data.forEach((item) => {
     const obj = { ...item }
-    if (!hasAnyChar(item.descripcion)) obj.descripcion = "0"
+    if (!hasAnyChar(obj.descripcion)) obj.descripcion = "0"
 
     filledData.push(obj)
   })
@@ -167,15 +167,15 @@ export const filterInvalidLiq = (data) => {
 
   data.forEach((item) => {
     const obj = { ...item }
-    if (item.isvComisiones == null || item.isvComisiones == undefined)
+    if (obj.isvComisiones == null || obj.isvComisiones == undefined)
       obj.isvComisiones = 0
-    if (item.comisiones == null || item.comisiones == undefined)
+    if (obj.comisiones == null || obj.comisiones == undefined)
       obj.comisiones = 0
-    if (item.retencionISR == null || item.retencionISR == undefined)
+    if (obj.retencionISR == null || obj.retencionISR == undefined)
       obj.retencionISR = 0
-    if (item.retencionISV == null || item.retencionISV == undefined)
+    if (obj.retencionISV == null || obj.retencionISV == undefined)
       obj.retencionISV = 0
-    if (!hasAnyChar(item.referencia)) obj.referencia = 0
+    if (!hasAnyChar(obj.referencia)) obj.referencia = 0
 
     filledData.push(obj)
   })
@@ -239,9 +239,9 @@ export const filterInvalidSalidas = (data) => {
     if (obj.tipoSalida !== "Cheque" && obj.tipoSalida !== "Transferencia")
       obj.tipoSalida = "Transferencia"
 
-    if (!hasAnyChar(item.nCheque)) obj.nCheque = 0
+    if (!hasAnyChar(obj.nCheque)) obj.nCheque = 0
 
-    if (!hasAnyChar(item.descripcion)) obj.descripcion = "0"
+    if (!hasAnyChar(obj.descripcion)) obj.descripcion = "0"
 
     filledData.push(obj)
   })
@@ -296,7 +296,7 @@ export const filterInvalidTraslados = (data) => {
 
     if (!hasAnyChar(obj.nReferencia)) obj.nReferencia = 0
 
-    if (!hasAnyChar(item.descripcion)) obj.descripcion = "0"
+    if (!hasAnyChar(obj.descripcion)) obj.descripcion = "0"
 
     filledData.push(obj)
   })
