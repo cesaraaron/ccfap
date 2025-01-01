@@ -125,9 +125,6 @@ export default function Depositos({ appData, setAppData }) {
   const statusBar = useMemo(() => {
     return {
       statusPanels: [
-        { statusPanel: "agTotalAndFilteredRowCountComponent" },
-        { statusPanel: "agTotalRowCountComponent" },
-        { statusPanel: "agFilteredRowCountComponent" },
         { statusPanel: "agSelectedRowCountComponent" },
         { statusPanel: "agAggregationComponent" },
       ],
@@ -137,20 +134,37 @@ export default function Depositos({ appData, setAppData }) {
   return (
     // wrapping container with theme & size
     <div className="flex flex-col">
-      <div className="p-2">
-        <button
-          className="btn btn-sm"
-          onClick={() => {
-            const nuevoDeposito = { id: generateId() }
-            setAppData({
-              ...appData,
-              depositos: [...appData.depositos, nuevoDeposito],
-            })
-            // gridRef.api.refreshCells()
-          }}
-        >
-          Agregar linea
-        </button>
+      <div className="flex">
+        <div className="flex flex-grow justify-center items-center p-2">
+          <h1 className="text-lg">Depositos bancarios</h1>
+        </div>
+        <div className="p-2">
+          <button
+            className="btn btn-xs btn-circle"
+            onClick={() => {
+              const nuevoDeposito = { id: generateId() }
+              setAppData({
+                ...appData,
+                depositos: [...appData.depositos, nuevoDeposito],
+              })
+            }}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-4 w-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M12 4v16m8-8H4"
+              />
+            </svg>
+          </button>
+        </div>
       </div>
       <div
         className="ag-theme-quartz w-full h-full" // applying the Data Grid theme

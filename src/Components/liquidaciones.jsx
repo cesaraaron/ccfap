@@ -133,6 +133,15 @@ export default function Liquidaciones({ appData, setAppData }) {
     },
   ])
 
+  const statusBar = useMemo(() => {
+    return {
+      statusPanels: [
+        { statusPanel: "agSelectedRowCountComponent" },
+        { statusPanel: "agAggregationComponent" },
+      ],
+    }
+  }, [])
+
   const defaultColDef = {
     flex: 1,
     editable: true,
@@ -146,18 +155,36 @@ export default function Liquidaciones({ appData, setAppData }) {
   return (
     // wrapping container with theme & size
     <div className="flex flex-col">
-      <div className="p-2">
-        <button
-          className="btn btn-sm"
-          onClick={() =>
-            setAppData({
-              ...appData,
-              liquidaciones: [...appData.liquidaciones, { id: generateId() }],
-            })
-          }
-        >
-          Agregar linea
-        </button>
+      <div className="flex">
+        <div className="flex flex-grow justify-center items-center p-2">
+          <h1 className="text-lg">Liquidaciones bancarias</h1>
+        </div>
+        <div className="p-2">
+          <button
+            className="btn btn-xs btn-circle"
+            onClick={() =>
+              setAppData({
+                ...appData,
+                liquidaciones: [...appData.liquidaciones, { id: generateId() }],
+              })
+            }
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-4 w-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M12 4v16m8-8H4"
+              />
+            </svg>
+          </button>
+        </div>
       </div>
       <div
         className="ag-theme-quartz w-full" // applying the Data Grid theme
@@ -172,6 +199,7 @@ export default function Liquidaciones({ appData, setAppData }) {
           dataTypeDefinitions={dataTypeDefinitions}
           suppressMovableColumns={true}
           tooltipShowDelay={200}
+          statusBar={statusBar}
           processDataFromClipboard={(p) =>
             processDataFromClipboard(p, (newRows) => {
               setAppData({
