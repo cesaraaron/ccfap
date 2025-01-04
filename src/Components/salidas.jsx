@@ -9,7 +9,12 @@ import {
   objIsEmpty,
   processDataFromClipboard,
 } from "../Utils/utils"
-import { generateAbonosFA, synCreditosFA } from "../Utils/generateCXC"
+import {
+  generateAbonosFA,
+  generateCXCComprasBodegas,
+  generateCXCTCPromerica,
+  synCreditosFA,
+} from "../Utils/generateCXC"
 import { filterInvalidSalidas } from "../Utils/filtrarMovimientos"
 
 Salidas.propTypes = {
@@ -141,11 +146,14 @@ export default function Salidas({ appData, setAppData }) {
   }, [])
 
   const onCellValueChanged = () => {
-    const newCreditosFA = generateAbonosFA(appData.salidas)
+    const newAbonosFA = generateAbonosFA(appData.salidas)
+    const newAbonosCompras = generateCXCComprasBodegas(appData.salidas)
+    const newAbonosTCPrmerica = generateCXCTCPromerica(appData.salidas)
     const oldCreditosFA = appData.cambioscxc
+
     const updatedCreditosFA = synCreditosFA(
       oldCreditosFA,
-      newCreditosFA,
+      [...newAbonosFA, ...newAbonosCompras, ...newAbonosTCPrmerica],
       appData.salidas,
     )
     setAppData({ ...appData, cambioscxc: [...updatedCreditosFA] })
@@ -171,7 +179,7 @@ export default function Salidas({ appData, setAppData }) {
     <div className="flex flex-col">
       <div className="flex">
         <div className="flex flex-grow justify-center items-center p-2">
-          <h1 className="text-lg">Salidas bancarias</h1>
+          <h1 className="text-lg">Transferencias bancarias</h1>
         </div>
         <div className="p-2">
           <button

@@ -1,10 +1,14 @@
 import {
-  hasAnyChar,
-  isValidDate,
+  filterInvalidDeposits,
+  filterInvalidSalidas,
+} from "./filtrarMovimientos"
+import {
   hasFAInIt,
   getFANameWithString,
   getCxpFaWithName as getCxpFaWithNumbers,
   getFaNumbers,
+  hasDROGInIt,
+  hasTCPromericaInIt,
 } from "./utils"
 
 /**
@@ -15,88 +19,116 @@ import {
  */
 
 export const generateCreditosFA = (data) => {
-  const mappedValues = data.map(
-    ({
-      id,
-      fecha,
-      monto,
-      banco,
-      cuentaOrigen,
-      descripcion,
-      subCuentaOrigen,
-    }) => {
-      // console.log("Inside generateCreditosFA, data: ", fecha)
+  const filteredData = filterInvalidDeposits(data)
 
-      if (
-        isValidDate(fecha) &&
-        !isNaN(monto) &&
-        monto > 0 &&
-        hasAnyChar(cuentaOrigen) &&
-        hasAnyChar(subCuentaOrigen) &&
-        hasAnyChar(banco) &&
-        hasFAInIt(descripcion)
-      ) {
-        const faName = getFANameWithString(descripcion)
-        return {
-          id: id,
-          fecha: fecha,
-          cuentaOrigen: "CXC Farmacias",
-          subCuentaOrigen: faName,
-          cuentaDestino: cuentaOrigen,
-          subCuentaDestino: subCuentaOrigen,
-          monto: monto,
-          descripcion: descripcion,
-        }
-      }
+  const mappedValues = []
 
-      return false
-    },
-  )
+  filteredData.forEach((d) => {
+    if (!hasFAInIt(d.descripcion)) return
 
-  return [...mappedValues.filter((item) => item !== false)]
+    const faName = getFANameWithString(d.descripcion)
+
+    mappedValues.push({
+      id: d.id,
+      fecha: d.fecha,
+      cuentaOrigen: "CXC Farmacias",
+      subCuentaOrigen: faName,
+      cuentaDestino: d.cuentaOrigen,
+      subCuentaDestino: d.subCuentaOrigen,
+      monto: d.monto,
+      descripcion: d.descripcion,
+    })
+  })
+
+  return mappedValues
 }
 
+/**
+ * Generates CXC for the FA deposits.
+ *
+ * @param {Array<import('./dataShape').Salida>} data - An array of objects containing credit information.
+ * @returns {Array<import('./dataShape').CambioCXC>} An array of objects after processing the input data.
+ */
+
 export const generateAbonosFA = (data) => {
-  const mappedValues = data.map(
-    ({
-      id,
-      fecha,
-      monto,
-      banco,
-      cuentaOrigen,
-      descripcion,
-      subCuentaOrigen,
-    }) => {
-      // console.log("Inside generateCreditosFA, data: ", fecha)
+  const filteredData = filterInvalidSalidas(data)
 
-      if (
-        isValidDate(fecha) &&
-        !isNaN(monto) &&
-        monto > 0 &&
-        hasAnyChar(cuentaOrigen) &&
-        hasAnyChar(subCuentaOrigen) &&
-        hasAnyChar(banco) &&
-        hasFAInIt(descripcion)
-      ) {
-        // eg: FA100, FA01 etc
-        const faNumbers = getFaNumbers(descripcion)
-        return {
-          id: id,
-          fecha: fecha,
-          cuentaOrigen: cuentaOrigen,
-          subCuentaOrigen: subCuentaOrigen,
-          cuentaDestino: "CXP Farmacias",
-          subCuentaDestino: getCxpFaWithNumbers(faNumbers),
-          monto: monto,
-          descripcion: descripcion,
-        }
-      }
+  const mappedValues = []
 
-      return false
-    },
-  )
+  filteredData.forEach((s) => {
+    if (!hasFAInIt(s.descripcion)) return
 
-  return [...mappedValues.filter((item) => item !== false)]
+    const faNumbers = getFaNumbers(s.descripcion)
+
+    mappedValues.push({
+      id: s.id,
+      fecha: s.fecha,
+      cuentaOrigen: s.cuentaOrigen,
+      subCuentaOrigen: s.subCuentaOrigen,
+      cuentaDestino: "CXP Farmacias",
+      subCuentaDestino: getCxpFaWithNumbers(faNumbers),
+      monto: s.monto,
+      descripcion: s.descripcion,
+    })
+  })
+
+  return mappedValues
+}
+
+/**
+ * Generates CXC for the FA deposits.
+ *
+ * @param {Array<import('./dataShape').Salida>} data - An array of objects containing credit information.
+ * @returns {Array<import('./dataShape').CambioCXC>} An array of objects after processing the input data.
+ */
+export const generateCXCComprasBodegas = (data) => {
+  const filteredData = filterInvalidSalidas(data)
+  const mappedValues = []
+
+  filteredData.forEach((s) => {
+    if (!hasDROGInIt(s.descripcion)) return
+
+    mappedValues.push({
+      id: s.id,
+      fecha: s.fecha,
+      cuentaOrigen: s.cuentaOrigen,
+      subCuentaOrigen: s.subCuentaOrigen,
+      cuentaDestino: "CXP Bodega",
+      subCuentaDestino: "FA Drogueria",
+      monto: s.monto,
+      descripcion: s.descripcion,
+    })
+  })
+
+  return mappedValues
+}
+
+/**
+ * Generates CXC for the FA deposits.
+ *
+ * @param {Array<import('./dataShape').Salida>} data - An array of objects containing credit information.
+ * @returns {Array<import('./dataShape').CambioCXC>} An array of objects after processing the input data.
+ */
+export const generateCXCTCPromerica = (data) => {
+  const filteredData = filterInvalidSalidas(data)
+  const mappedValues = []
+
+  filteredData.forEach((s) => {
+    if (!hasTCPromericaInIt(s.descripcion)) return
+
+    mappedValues.push({
+      id: s.id,
+      fecha: s.fecha,
+      cuentaOrigen: s.cuentaOrigen,
+      subCuentaOrigen: s.subCuentaOrigen,
+      cuentaDestino: "Prestamo Bodega",
+      subCuentaDestino: "Prestamo Bodega",
+      monto: s.monto,
+      descripcion: s.descripcion,
+    })
+  })
+
+  return mappedValues
 }
 
 /**

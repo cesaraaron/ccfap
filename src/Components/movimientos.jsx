@@ -26,7 +26,7 @@ const LeftPanel = (props) => {
           name="movimientos_tabs"
           role="tab"
           className="tab"
-          aria-label="Transferencias"
+          aria-label="Salidas"
         />
         <div role="tabpanel" className="tab-content p-2">
           <Salidas {...props} />

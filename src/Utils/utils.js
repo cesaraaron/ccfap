@@ -101,6 +101,16 @@ export const hasFAInIt = (str) => {
   return regex.test(str)
 }
 
+export const hasDROGInIt = (str) => {
+  const regex = /\bDROG\d{2,3}/i // Match "DROG" followed by 2-3 digits
+  return regex.test(str)
+}
+
+export const hasTCPromericaInIt = (str) => {
+  const regex = /\bTC\sPromerica/i // Match "TCPromerica" followed by 2-3 digits
+  return regex.test(str)
+}
+
 export const getFAString = (str = "") => {
   const regex = /\bfa\d{2,3}/i // Match "fa" or "FA" followed by 2-3 digits
 
