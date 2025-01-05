@@ -46,7 +46,7 @@ export const filterInvalidDeposits = (data) => {
 
       if (!auxiliaresValues.includes(subCuentaOrigen)) return false
 
-      if (monto == 0 || isNaN(monto)) return false
+      if (typeof monto !== "number" || monto == 0) return false
 
       if (!Object.values(bancos).includes(banco)) return false
 
@@ -101,7 +101,7 @@ export const filterInvalidCXP = (data) => {
 
       if (!subCuentaDestinoValues.includes(subCuentaDestino)) return false
 
-      if (monto == 0 || isNaN(monto)) return false
+      if (typeof monto !== "number" || monto == 0) return false
 
       if (!hasAnyChar(descripcion)) return false
 
@@ -151,7 +151,7 @@ export const filterInvalidCXC = (data) => {
 
       if (!subCuentaDestinoValues.includes(subCuentaDestino)) return false
 
-      if (monto == 0 || isNaN(monto)) return false
+      if (typeof monto !== "number" || monto == 0) return false
 
       if (!hasAnyChar(descripcion)) return false
 
@@ -223,7 +223,7 @@ export const filterInvalidLiq = (data) => {
       if (!isValidDate(fecha)) {
         return false
       }
-      if (montoBanco == 0 || isNaN(montoBanco)) {
+      if (typeof montoBanco !== "number" || montoBanco == 0) {
         return false
       }
       if (isNaN(comisiones)) {
@@ -293,7 +293,7 @@ export const filterInvalidSalidas = (data) => {
 
       if (!Object.values(bancos).includes(banco)) return false
 
-      if (isNaN(monto)) return false
+      if (typeof monto !== "number" || monto == 0) return false
 
       if (isNaN(nCheque)) return false
       if (!hasAnyChar(descripcion)) return false
@@ -345,7 +345,7 @@ export const filterInvalidTraslados = (data) => {
 
       if (!Object.values(bancos).includes(bancoDestino)) return false
 
-      if (isNaN(monto)) return false
+      if (typeof monto !== "number" || monto == 0) return false
 
       if (!(tipoSalida == "Cheque" || tipoSalida == "Transferencia"))
         return false
