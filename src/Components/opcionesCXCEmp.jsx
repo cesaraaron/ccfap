@@ -75,6 +75,8 @@ export default function OpcionesCXCEmp() {
 
     if (isEmpty) {
       auxiliares["CXC Empleados"] = {}
+      localStorage.setItem("options", JSON.stringify({ cxcEmpleados: [] }))
+
       return
     }
 
@@ -95,7 +97,7 @@ export default function OpcionesCXCEmp() {
     <div>
       <div className="collapse bg-base-200">
         <input type="checkbox" />
-        <div className="collapse-title text-lg">
+        <div className="collapse-title text-base">
           Agregar codigos de empleados
         </div>
         <div className="collapse-content">

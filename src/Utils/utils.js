@@ -102,7 +102,7 @@ export const hasFAInIt = (str) => {
 }
 
 export const hasDROGInIt = (str) => {
-  const regex = /\bDROG\d{2,3}/i // Match "DROG" followed by 2-3 digits
+  const regex = /\bDROG\d{1,3}/i // Match "DROG" followed by 2-3 digits
   return regex.test(str)
 }
 
