@@ -5,10 +5,27 @@ import { data } from "./Utils/dataShape"
 import { ActionButtons } from "./Components/actionButtons"
 import { deepCopy } from "./Utils/utils"
 import Split from "react-split"
+import { auxiliares } from "../datamodel"
 
 const App = () => {
   const [appData, setAppData] = useState(deepCopy(data))
   const [showVisualizador, setShowVisualizador] = useState(false)
+
+  const optionsString = localStorage.getItem("options")
+
+  if (optionsString) {
+    const parsedOptions = JSON.parse(optionsString)
+
+    if (Array.isArray(parsedOptions.cxcEmpleados)) {
+      const obj = {}
+      parsedOptions.cxcEmpleados.forEach((item) => {
+        if (item.codigo > 0 && /./.test(item.nombre)) {
+          obj[item.codigo] = item.nombre
+        }
+      })
+      auxiliares["CXC Empleados"] = obj
+    }
+  }
 
   return (
     <div>
