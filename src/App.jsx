@@ -9,6 +9,7 @@ import { auxiliares } from "../datamodel"
 
 const App = () => {
   const [appData, setAppData] = useState(deepCopy(data))
+  const [llenado, setLlenado] = useState([{}])
   const [showVisualizador, setShowVisualizador] = useState(false)
 
   const optionsString = localStorage.getItem("options")
@@ -48,8 +49,13 @@ const App = () => {
               <ActionButtons appData={appData} setAppData={setAppData} />
             </div>
 
-            <div className="p-4">
-              <Visualizador />
+            <div className=" p-4">
+              <Visualizador
+                appData={appData}
+                setAppData={setAppData}
+                llenado={llenado}
+                setLlenado={setLlenado}
+              />
             </div>
           </Split>
         </div>

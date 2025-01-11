@@ -1609,6 +1609,10 @@ export const mayores = {
     id: 13,
     type: "CXC",
   },
+  "CXC Retenciones": {
+    id: 25,
+    type: "CXC",
+  },
   "CXP Retenciones": {
     id: 22,
     acepta_depositos: false,

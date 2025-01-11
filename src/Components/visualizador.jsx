@@ -1,29 +1,42 @@
-const RightPanel = () => {
-  return (
-    <div className="flex justify-center items-center">
-      <div role="tablist" className="tabs tabs-bordered">
-        <input
-          type="radio"
-          name="my_tabs_1"
-          role="tab"
-          className="tab"
-          aria-label="Llenado"
-          defaultChecked
-        />
-        <div role="tabpanel" className="tab-content p-10">
-          Tab content 1
-        </div>
+import { useState } from "react"
+import VisualizadorLlenado from "./visualizadorLlenado"
+import { VisualizadorVisualizador } from "./visualizadorVisualizador"
 
-        <input
-          type="radio"
-          name="my_tabs_1"
+const RightPanel = (props) => {
+  const [activeTab, setActiveTab] = useState("llenado")
+
+  return (
+    <div>
+      {/* Tab List */}
+      <div role="tablist" className="tabs tabs-bordered">
+        <button
           role="tab"
-          className="tab"
-          aria-label="Visualizador"
-        />
-        <div role="tabpanel" className="tab-content p-10">
-          Tab content 2
-        </div>
+          className={`tab ${activeTab === "llenado" ? "tab-active" : ""}`}
+          onClick={() => setActiveTab("llenado")}
+        >
+          Llenado
+        </button>
+        <button
+          role="tab"
+          className={`tab ${activeTab === "visualizador" ? "tab-active" : ""}`}
+          onClick={() => setActiveTab("visualizador")}
+        >
+          Visualizador
+        </button>
+      </div>
+
+      {/* Tab Content */}
+      <div className="mt-6">
+        {activeTab === "llenado" && (
+          <div id="llenado-content">
+            <VisualizadorLlenado {...props} />
+          </div>
+        )}
+        {activeTab === "visualizador" && (
+          <div id="visualizador-content">
+            <VisualizadorVisualizador {...props} />
+          </div>
+        )}
       </div>
     </div>
   )
