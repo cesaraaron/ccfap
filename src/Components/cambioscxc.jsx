@@ -135,6 +135,21 @@ export default function Cambioscxc({ appData, setAppData }) {
     suppressHeaderContextMenu: true,
   }
 
+  const onCellValueChanged = (params) => {
+    setAppData({
+      ...appData,
+      cambioscxc: appData.cambioscxc.map((row) => {
+        if (row.id === params.data.id) {
+          return {
+            ...row,
+            [params.column.field]: params.newValue,
+          }
+        }
+        return row
+      }),
+    })
+  }
+
   const rowClassRules = useMemo(() => {
     return {
       "bg-red-50": (params) => {
@@ -199,6 +214,7 @@ export default function Cambioscxc({ appData, setAppData }) {
           tooltipShowDelay={200}
           statusBar={statusBar}
           rowClassRules={rowClassRules}
+          onCellValueChanged={onCellValueChanged}
           processDataFromClipboard={(p) =>
             processDataFromClipboard(p, (newRows) => {
               setAppData({

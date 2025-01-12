@@ -6,6 +6,12 @@ export function getFaNumbers(str) {
   return match ? match[1] : null
 }
 
+export function formatNumberWithCommas(n) {
+  var parts = n.toString().split(".")
+  parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+  return parts.join(".")
+}
+
 export const createDateFromString = (str = "") => {
   const [day, month, year] = str.split("/").map(Number)
   return new Date(year, month - 1, day)

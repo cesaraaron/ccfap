@@ -122,6 +122,21 @@ export default function Traslados({ appData, setAppData }) {
     }
   }, [])
 
+  const onCellValueChanged = (params) => {
+    setAppData({
+      ...appData,
+      traslados: appData.traslados.map((item) => {
+        if (item.id === params.data.id) {
+          return {
+            ...item,
+            [params.column.field]: params.newValue,
+          }
+        }
+        return item
+      }),
+    })
+  }
+
   const rowClassRules = useMemo(() => {
     return {
       "bg-red-50": (params) => {
@@ -186,6 +201,7 @@ export default function Traslados({ appData, setAppData }) {
           tooltipShowDelay={200}
           statusBar={statusBar}
           rowClassRules={rowClassRules}
+          onCellValueChanged={onCellValueChanged}
           processDataFromClipboard={(p) =>
             processDataFromClipboard(p, (newRows) => {
               setAppData({

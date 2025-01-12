@@ -145,6 +145,21 @@ export default function Cambioscxp({ appData, setAppData }) {
     }
   }, [])
 
+  const onCellValueChanged = (params) => {
+    setAppData({
+      ...appData,
+      cambioscxp: appData.cambioscxp.map((row) => {
+        if (row.id === params.data.id) {
+          return {
+            ...row,
+            [params.column.field]: params.newValue,
+          }
+        }
+        return row
+      }),
+    })
+  }
+
   return (
     // wrapping container with theme & size
     <div className="flex flex-col">
@@ -194,6 +209,7 @@ export default function Cambioscxp({ appData, setAppData }) {
           tooltipShowDelay={200}
           statusBar={statusBar}
           rowClassRules={rowClassRules}
+          onCellValueChanged={onCellValueChanged}
           processDataFromClipboard={(p) =>
             processDataFromClipboard(p, (newRows) => {
               setAppData({
