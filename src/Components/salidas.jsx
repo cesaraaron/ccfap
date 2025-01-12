@@ -224,6 +224,7 @@ export default function Salidas({ appData, setAppData }) {
           tooltipShowDelay={200}
           statusBar={statusBar}
           rowClassRules={rowClassRules}
+          suppressScrollOnNewData={true}
           processDataFromClipboard={(p) =>
             processDataFromClipboard(p, (newRows) => {
               setAppData({

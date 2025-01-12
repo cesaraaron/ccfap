@@ -182,19 +182,11 @@ export default function Liquidaciones({ appData, setAppData }) {
     }
   }, [])
 
-  const onCellValueChanged = (params) => {
-    setAppData({
-      ...appData,
-      liquidaciones: appData.liquidaciones.map((row) => {
-        if (row.id === params.data.id) {
-          return {
-            ...row,
-            [params.column.field]: params.newValue,
-          }
-        }
-        return row
-      }),
-    })
+  const onCellValueChanged = () => {
+    const valid = filterInvalidLiq(appData.liquidaciones)
+    if (valid.length === 0) return
+
+    setAppData({ ...appData, liquidaciones: appData.liquidaciones })
   }
 
   const rowClassRules = useMemo(() => {

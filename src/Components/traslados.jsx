@@ -122,19 +122,10 @@ export default function Traslados({ appData, setAppData }) {
     }
   }, [])
 
-  const onCellValueChanged = (params) => {
-    setAppData({
-      ...appData,
-      traslados: appData.traslados.map((item) => {
-        if (item.id === params.data.id) {
-          return {
-            ...item,
-            [params.column.field]: params.newValue,
-          }
-        }
-        return item
-      }),
-    })
+  const onCellValueChanged = () => {
+    const valid = filterInvalidTraslados(appData.traslados)
+    if (valid.length === 0) return
+    setAppData({ ...appData, traslados: appData.traslados })
   }
 
   const rowClassRules = useMemo(() => {
@@ -202,6 +193,7 @@ export default function Traslados({ appData, setAppData }) {
           statusBar={statusBar}
           rowClassRules={rowClassRules}
           onCellValueChanged={onCellValueChanged}
+          suppressScrollOnNewData={true}
           processDataFromClipboard={(p) =>
             processDataFromClipboard(p, (newRows) => {
               setAppData({

@@ -145,19 +145,11 @@ export default function Cambioscxp({ appData, setAppData }) {
     }
   }, [])
 
-  const onCellValueChanged = (params) => {
-    setAppData({
-      ...appData,
-      cambioscxp: appData.cambioscxp.map((row) => {
-        if (row.id === params.data.id) {
-          return {
-            ...row,
-            [params.column.field]: params.newValue,
-          }
-        }
-        return row
-      }),
-    })
+  const onCellValueChanged = () => {
+    const valid = filterInvalidCXP(appData.cambioscxp)
+    if (valid.length === 0) return
+
+    setAppData({ ...appData, cambioscxp: appData.cambioscxp })
   }
 
   return (
@@ -210,6 +202,7 @@ export default function Cambioscxp({ appData, setAppData }) {
           statusBar={statusBar}
           rowClassRules={rowClassRules}
           onCellValueChanged={onCellValueChanged}
+          suppressScrollOnNewData={true}
           processDataFromClipboard={(p) =>
             processDataFromClipboard(p, (newRows) => {
               setAppData({

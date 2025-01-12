@@ -1,6 +1,6 @@
 import { AgGridReact } from "ag-grid-react"
 import PropTypes from "prop-types"
-import { useEffect, useMemo, useState } from "react"
+import { useMemo, useRef, useState } from "react"
 import {
   filterInvalidCXC,
   filterInvalidCXP,
@@ -9,20 +9,20 @@ import {
   filterInvalidSalidas,
   filterInvalidTraslados,
 } from "../Utils/filtrarMovimientos"
-import { formatNumberWithCommas, hasAnyChar } from "../Utils/utils"
+import { deepCopy, formatNumberWithCommas, hasAnyChar } from "../Utils/utils"
 
 export const VisualizadorVisualizador = ({ appData, llenado }) => {
-  const [vis, setVis] = useState(llenado)
+  const gridRef = useRef()
+  const [vis, setVis] = useState([...deepCopy(llenado)])
 
   const cellSelection = useMemo(() => {
     return true
   }, [])
 
-  useEffect(() => {
-    const newLlenado = updateVisualizador(appData, llenado)
-    console.log("hello there")
-    setVis(newLlenado)
-  }, [llenado, appData])
+  // useMemo(() => {
+  //   const newLlenado = updateVisualizador(appData, llenado)
+  //   setVis(newLlenado)
+  // }, [llenado, appData])
 
   const [colDefs] = useState([
     {
@@ -68,6 +68,7 @@ export const VisualizadorVisualizador = ({ appData, llenado }) => {
         }
         return null // Default style
       },
+      cellRenderer: "agAnimateShowChangeCellRenderer",
     },
   ])
 
@@ -80,10 +81,43 @@ export const VisualizadorVisualizador = ({ appData, llenado }) => {
       suppressHeaderMenuButton: true,
       wrapHeaderText: true,
       suppressHeaderContextMenu: true,
+      enableCellChangeFlash: true,
     }),
     [],
   )
-  const onCellValueChanged = () => {}
+
+  const onComponentStateChanged = (p) => {
+    const newLlenado = updateVisualizador(appData, llenado)
+
+    for (let i = 0; i < newLlenado.length; i++) {
+      const rowNode = p.api.getDisplayedRowAtIndex(i)
+      rowNode.setDataValue("delta", newLlenado[i].delta)
+      rowNode.setDataValue("final", newLlenado[i].final)
+    }
+  }
+
+  const onGridReady = () => {
+    const newLlenado = updateVisualizador(appData, llenado)
+    setVis(newLlenado)
+  }
+
+  // const componentStateChanged = (p) => {
+  //   console.log("componentStateChanged", p)
+  //   p.api.flashCells()
+  // }
+  // console.log("changeIndexes", changeIndexes)
+  // p.api.refreshCells({ rowIndexes: changeIndexes })
+
+  // setVis(newLlenado)
+  // console.log("componentStateChanged", p)
+
+  // setVis(newLlenado)
+  // const rowNode = p.api.getDisplayedRowAtIndex(1)
+  // rowNode.setDataValue("delta", "10")
+  // p.api.flashCells({ rowNodes: [rowNode] })
+
+  // const rowNode1 = p.api.getDisplayedRowAtIndex(4)
+  // p.api.flashCells({ rowNodes: [rowNode1] })
 
   const getRowStyle = (params) => {
     if (params.node.rowIndex % 2 !== 0) {
@@ -96,14 +130,16 @@ export const VisualizadorVisualizador = ({ appData, llenado }) => {
       style={{ height: "600px", width: "100%" }} // the Data Grid will fill the size of the parent container
     >
       <AgGridReact
+        gridRef={gridRef}
         rowData={vis}
         columnDefs={colDefs}
         rowHeight={30}
         headerHeight={30}
+        onComponentStateChanged={onComponentStateChanged}
+        onGridReady={onGridReady}
         defaultColDef={defaultColDef}
         cellSelection={cellSelection}
         suppressMovableColumns={true}
-        onCellValueChanged={onCellValueChanged}
         tooltipShowDelay={200}
         suppressScrollOnNewData={true}
         getRowStyle={getRowStyle}
