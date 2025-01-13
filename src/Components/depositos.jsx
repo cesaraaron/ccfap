@@ -195,12 +195,12 @@ export default function Depositos({ appData, setAppData }) {
       </div>
       <div
         className="ag-theme-quartz w-full h-full" // applying the Data Grid theme
-        style={{ height: "500px" }} // the Data Grid will fill the size of the parent container
+        style={{ height: "600px" }} // the Data Grid will fill the size of the parent container
       >
         <AgGridReact
           rowData={appData.depositos}
           columnDefs={colDefs}
-          rowHeight={35}
+          rowHeight={30}
           defaultColDef={defaultColDef}
           cellSelection={cellSelection}
           dataTypeDefinitions={dataTypeDefinitions}

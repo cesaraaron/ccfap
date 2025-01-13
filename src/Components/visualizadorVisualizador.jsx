@@ -101,24 +101,6 @@ export const VisualizadorVisualizador = ({ appData, llenado }) => {
     setVis(newLlenado)
   }
 
-  // const componentStateChanged = (p) => {
-  //   console.log("componentStateChanged", p)
-  //   p.api.flashCells()
-  // }
-  // console.log("changeIndexes", changeIndexes)
-  // p.api.refreshCells({ rowIndexes: changeIndexes })
-
-  // setVis(newLlenado)
-  // console.log("componentStateChanged", p)
-
-  // setVis(newLlenado)
-  // const rowNode = p.api.getDisplayedRowAtIndex(1)
-  // rowNode.setDataValue("delta", "10")
-  // p.api.flashCells({ rowNodes: [rowNode] })
-
-  // const rowNode1 = p.api.getDisplayedRowAtIndex(4)
-  // p.api.flashCells({ rowNodes: [rowNode1] })
-
   const getRowStyle = (params) => {
     if (params.node.rowIndex % 2 !== 0) {
       return { background: "#f7f7f7" }
@@ -127,7 +109,7 @@ export const VisualizadorVisualizador = ({ appData, llenado }) => {
   return (
     <div
       className="ag-theme-quartz" // applying the Data Grid theme
-      style={{ height: "600px", width: "100%" }} // the Data Grid will fill the size of the parent container
+      style={{ height: "800px", width: "100%" }} // the Data Grid will fill the size of the parent container
     >
       <AgGridReact
         gridRef={gridRef}

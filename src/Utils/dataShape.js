@@ -1,4 +1,4 @@
-import { generateId } from "./utils"
+import { generateObjets } from "./utils"
 
 /**
  * Represents a deposit transaction.
@@ -82,89 +82,10 @@ import { generateId } from "./utils"
  */
 
 export const data = {
-  depositos: [
-    {
-      id: generateId(),
-    },
-    { id: generateId() },
-    { id: generateId() },
-    { id: generateId() },
-    { id: generateId() },
-    { id: generateId() },
-    { id: generateId() },
-    { id: generateId() },
-    { id: generateId() },
-    { id: generateId() },
-  ],
-  salidas: [
-    {
-      id: generateId(),
-    },
-    { id: generateId() },
-    { id: generateId() },
-    { id: generateId() },
-    { id: generateId() },
-    { id: generateId() },
-    { id: generateId() },
-    { id: generateId() },
-    { id: generateId() },
-    { id: generateId() },
-  ],
-
-  traslados: [
-    {
-      id: generateId(),
-    },
-    { id: generateId() },
-    { id: generateId() },
-    { id: generateId() },
-    { id: generateId() },
-    { id: generateId() },
-    { id: generateId() },
-    { id: generateId() },
-    { id: generateId() },
-    { id: generateId() },
-  ],
-  liquidaciones: [
-    {
-      id: generateId(),
-    },
-    { id: generateId() },
-    { id: generateId() },
-    { id: generateId() },
-    { id: generateId() },
-    { id: generateId() },
-    { id: generateId() },
-    { id: generateId() },
-    { id: generateId() },
-    { id: generateId() },
-  ],
-  cambioscxc: [
-    {
-      id: generateId(),
-    },
-    { id: generateId() },
-    { id: generateId() },
-    { id: generateId() },
-    { id: generateId() },
-    { id: generateId() },
-    { id: generateId() },
-    { id: generateId() },
-    { id: generateId() },
-    { id: generateId() },
-  ],
-  cambioscxp: [
-    {
-      id: generateId(),
-    },
-    { id: generateId() },
-    { id: generateId() },
-    { id: generateId() },
-    { id: generateId() },
-    { id: generateId() },
-    { id: generateId() },
-    { id: generateId() },
-    { id: generateId() },
-    { id: generateId() },
-  ],
+  depositos: generateObjets(20),
+  salidas: generateObjets(20),
+  traslados: generateObjets(20),
+  liquidaciones: generateObjets(20),
+  cambioscxc: generateObjets(20),
+  cambioscxp: generateObjets(20),
 }

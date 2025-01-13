@@ -188,11 +188,11 @@ export default function Cambioscxp({ appData, setAppData }) {
       </div>
       <div
         className="ag-theme-quartz w-full" // applying the Data Grid theme
-        style={{ height: 500 }} // the Data Grid will fill the size of the parent container
+        style={{ height: 600 }} // the Data Grid will fill the size of the parent container
       >
         <AgGridReact
           rowData={appData.cambioscxp}
-          rowHeight={35}
+          rowHeight={30}
           columnDefs={colDefs}
           defaultColDef={defaultColDef}
           cellSelection={cellSelection}

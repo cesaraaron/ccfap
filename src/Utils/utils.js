@@ -17,6 +17,18 @@ export const createDateFromString = (str = "") => {
   return new Date(year, month - 1, day)
 }
 
+export const generateObjets = (amt = 1) => {
+  const arr = []
+
+  for (let i = 0; i < amt; i++) {
+    arr.push({
+      id: generateId(),
+    })
+  }
+
+  return arr
+}
+
 export const objIsEmpty = (obj) => {
   const newObj = { ...obj }
   newObj.id = ""
