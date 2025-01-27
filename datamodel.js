@@ -1700,6 +1700,7 @@ export const cxc = [
   "CXC Empleados",
   "CXC Farmacias",
   "CXC Retenciones",
+  "CXC Control de Inventario",
 ]
 
 export const cxp = [

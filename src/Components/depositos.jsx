@@ -128,10 +128,11 @@ export default function Depositos({ appData, setAppData }) {
     [],
   )
 
-  const onCellValueChanged = () => {
+  const onCellValueChanged = (p) => {
+    console.log("onCellValueChanged", p)
     const hasCXCFA = depositos.depositos.includes("CXC Farmacias")
 
-    if (hasCXCFA) {
+    if (hasCXCFA && hasFAInIt(p.newValue)) {
       const newDepositos = appData.depositos.map((d) => {
         if (!hasFAInIt(d.descripcion)) return d
 

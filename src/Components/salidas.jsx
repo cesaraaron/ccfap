@@ -153,7 +153,7 @@ export default function Salidas({ appData, setAppData }) {
     }
   }, [])
 
-  const onCellValueChanged = () => {
+  const onCellValueChanged = (p) => {
     let newSalidas = [...appData.salidas]
 
     const hasCXPFA = salidas.salidas.includes("CXP Farmacias")
@@ -212,12 +212,18 @@ export default function Salidas({ appData, setAppData }) {
         }
       })
     }
-    console.log("updatedCreditosFA", updatedCreditosFA)
-    setAppData({
-      ...appData,
-      salidas: newSalidas,
-      cambioscxc: [...updatedCreditosFA],
-    })
+
+    if (
+      hasFAInIt(p.newValue) ||
+      hasDROGInIt(p.newValue) ||
+      hasTCPromericaInIt(p.newValue)
+    ) {
+      setAppData({
+        ...appData,
+        salidas: newSalidas,
+        cambioscxc: [...updatedCreditosFA],
+      })
+    }
   }
 
   const rowClassRules = useMemo(() => {

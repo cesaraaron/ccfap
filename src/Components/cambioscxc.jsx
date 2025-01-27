@@ -136,13 +136,12 @@ export default function Cambioscxc({ appData, setAppData }) {
   }
 
   const onCellValueChanged = () => {
-    const filtered = filterInvalidCXC(appData.cambioscxc)
-    if (filtered.length === 0) return
-
-    setAppData({
-      ...appData,
-      cambioscxc: [...appData.cambioscxc],
-    })
+    // const filtered = filterInvalidCXC(appData.cambioscxc)
+    // if (filtered.length === 0) return
+    // setAppData({
+    //   ...appData,
+    //   cambioscxc: [...appData.cambioscxc],
+    // })
   }
 
   const rowClassRules = useMemo(() => {
