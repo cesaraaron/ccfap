@@ -1,6 +1,6 @@
-import { auxiliares, cuentasDepositos } from "../../datamodel"
+import { auxiliares, cuentasDepositos, cuentasSalidas } from "../../datamodel"
 
-export function getAccountNamesWithCodes(str = "") {
+export function getDepositosAdicionalesWithCodes(str = "") {
   const result = str.split(",")
 
   if (result.length === 0) {
@@ -9,6 +9,18 @@ export function getAccountNamesWithCodes(str = "") {
 
   return result.map((c) => {
     return cuentasDepositos[c] || "No disponible"
+  })
+}
+
+export function getSalidasAdicionalesWithCodes(str = "") {
+  const result = str.split(",")
+
+  if (result.length === 0) {
+    return []
+  }
+
+  return result.map((c) => {
+    return cuentasSalidas[c] || "No disponible"
   })
 }
 
@@ -140,7 +152,7 @@ export const hasDROGInIt = (str) => {
 }
 
 export const hasTCPromericaInIt = (str) => {
-  const regex = /\bTC\sPromerica/i // Match "TCPromerica" followed by 2-3 digits
+  const regex = /\bTC\sPromerica/i // Match "TCPromerica"
   return regex.test(str)
 }
 

@@ -6,8 +6,14 @@ import PropTypes from "prop-types"
 import { dataTypeDefinitions } from "../Utils/dataTypeDefs"
 import {
   generateId,
+  getCxpFaWithName,
+  getFaNumbers,
+  hasDROGInIt,
+  hasFAInIt,
+  hasTCPromericaInIt,
   objIsEmpty,
   processDataFromClipboard,
+  uniqueArr,
 } from "../Utils/utils"
 import {
   generateAbonosFA,
@@ -46,11 +52,13 @@ export default function Salidas({ appData, setAppData }) {
       field: "cuentaOrigen",
       cellEditor: "agRichSelectCellEditor",
 
-      cellEditorParams: {
-        values: salidas,
-        allowTyping: true,
-        filterList: true,
-        highlightMatch: true,
+      cellEditorParams: () => {
+        return {
+          values: uniqueArr(salidas.salidas),
+          allowTyping: true,
+          filterList: true,
+          highlightMatch: true,
+        }
       },
     },
     {
@@ -146,17 +154,70 @@ export default function Salidas({ appData, setAppData }) {
   }, [])
 
   const onCellValueChanged = () => {
-    const newAbonosFA = generateAbonosFA(appData.salidas)
-    const newAbonosCompras = generateCXCComprasBodegas(appData.salidas)
-    const newAbonosTCPrmerica = generateCXCTCPromerica(appData.salidas)
+    let newSalidas = [...appData.salidas]
+
+    const hasCXPFA = salidas.salidas.includes("CXP Farmacias")
+    const hasCXPBodega = salidas.salidas.includes("CXP Bodega")
+    const hasPrestamo = salidas.salidas.includes("Prestamo Bodega")
+
+    const newAbonosFA = hasCXPFA ? [] : generateAbonosFA(newSalidas)
+    const newAbonosCompras = hasCXPBodega
+      ? []
+      : generateCXCComprasBodegas(newSalidas)
+    const newAbonosTCPrmerica = hasPrestamo
+      ? []
+      : generateCXCTCPromerica(newSalidas)
     const oldCreditosFA = appData.cambioscxc
 
     const updatedCreditosFA = synCreditosFA(
       oldCreditosFA,
       [...newAbonosFA, ...newAbonosCompras, ...newAbonosTCPrmerica],
-      appData.salidas,
+      newSalidas,
     )
-    setAppData({ ...appData, cambioscxc: [...updatedCreditosFA] })
+
+    if (hasCXPFA) {
+      newSalidas = newSalidas.map((s) => {
+        if (!hasFAInIt(s.descripcion)) return s
+
+        const faNumbers = getFaNumbers(s.descripcion)
+
+        return {
+          ...s,
+          cuentaOrigen: "CXP Farmacias",
+          subCuentaOrigen: getCxpFaWithName(faNumbers),
+        }
+      })
+    }
+
+    if (hasCXPBodega) {
+      newSalidas = newSalidas.map((s) => {
+        if (!hasDROGInIt(s.descripcion)) return s
+
+        return {
+          ...s,
+          cuentaOrigen: "CXP Bodega",
+          subCuentaOrigen: "FA Drogueria",
+        }
+      })
+    }
+
+    if (hasPrestamo) {
+      newSalidas = newSalidas.map((s) => {
+        if (!hasTCPromericaInIt(s.descripcion)) return s
+
+        return {
+          ...s,
+          cuentaOrigen: "Prestamo Bodega",
+          subCuentaOrigen: "Prestamo Bodega",
+        }
+      })
+    }
+    console.log("updatedCreditosFA", updatedCreditosFA)
+    setAppData({
+      ...appData,
+      salidas: newSalidas,
+      cambioscxc: [...updatedCreditosFA],
+    })
   }
 
   const rowClassRules = useMemo(() => {

@@ -285,7 +285,7 @@ export const filterInvalidSalidas = (data) => {
     }) => {
       if (!isValidDate(fecha)) return false
 
-      if (!salidas.includes(cuentaOrigen)) return false
+      if (!salidas.salidas.includes(cuentaOrigen)) return false
 
       const auxiliaresValues = Object.values(auxiliares[cuentaOrigen])
 

@@ -1,14 +1,14 @@
 import { AgGridReact } from "ag-grid-react"
 import { useMemo, useState } from "react"
 import {
-  getDepositosAdicionalesWithCodes,
+  getSalidasAdicionalesWithCodes,
   processDataFromClipboard,
   uniqueArr,
 } from "../Utils/utils"
-import { depositos, originalDepositos } from "../../datamodel"
+import { originalSalidas, salidas } from "../../datamodel"
 
-export default function CuentasDepositos() {
-  let defaultState = { cuentasDepositos: "" }
+export default function CuentasSalidas() {
+  let defaultState = { cuentasSalidas: "" }
   const optionsString = localStorage.getItem("options")
 
   if (optionsString) {
@@ -34,7 +34,8 @@ export default function CuentasDepositos() {
       headerName: "Codigos separados por comas",
       field: "codigo",
       cellDataType: "string",
-      tooltipValueGetter: () => "Codigos de cuentas contables para depositos",
+      tooltipValueGetter: () =>
+        "Codigos de cuentas contables para transferencias",
     },
     {
       headerName: "Resultado",
@@ -44,7 +45,7 @@ export default function CuentasDepositos() {
       cellRenderer: "agAnimateShowChangeCellRenderer",
       cellClass: "font-bold",
       tooltipValueGetter: () =>
-        "Resultado de los codigos de cuentas contables para depositos",
+        "Resultado de los codigos de cuentas contables para transferencias",
     },
   ])
 
@@ -64,22 +65,22 @@ export default function CuentasDepositos() {
   const onCellValueChanged = (p) => {
     const rowNode = p.api.getDisplayedRowAtIndex(0)
 
-    const nuevasCuentasDepositos = getDepositosAdicionalesWithCodes(
+    const nuevasCuentasSalidas = getSalidasAdicionalesWithCodes(
       rowNode.data.codigo,
     )
 
-    rowNode.setDataValue("resultado", nuevasCuentasDepositos.join(","))
+    rowNode.setDataValue("resultado", nuevasCuentasSalidas.join(","))
 
-    depositos.depositos = uniqueArr([
-      ...originalDepositos,
-      ...nuevasCuentasDepositos.filter((v) => v !== "No disponible"),
+    salidas.salidas = uniqueArr([
+      ...originalSalidas,
+      ...nuevasCuentasSalidas.filter((v) => v !== "No disponible"),
     ])
 
     localStorage.setItem(
       "options",
-      JSON.stringify({ ...state, cuentasDepositos: rowNode.data.codigo }),
+      JSON.stringify({ ...state, cuentasSalidas: rowNode.data.codigo }),
     )
-    setState({ ...state, cuentasDepositos: rowNode.data.codigo })
+    setState({ ...state, cuentasSalidas: rowNode.data.codigo })
   }
 
   return (
@@ -92,9 +93,9 @@ export default function CuentasDepositos() {
           <AgGridReact
             rowData={[
               {
-                codigo: state.cuentasDepositos,
-                resultado: getDepositosAdicionalesWithCodes(
-                  state.cuentasDepositos,
+                codigo: state.cuentasSalidas,
+                resultado: getSalidasAdicionalesWithCodes(
+                  state.cuentasSalidas,
                 ).join(","),
               },
             ]}

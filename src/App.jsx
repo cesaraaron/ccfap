@@ -3,9 +3,20 @@ import Movimientos from "./Components/movimientos"
 import Visualizador from "./Components/visualizador"
 import { data } from "./Utils/dataShape"
 import { ActionButtons } from "./Components/actionButtons"
-import { deepCopy, getAccountNamesWithCodes, uniqueArr } from "./Utils/utils"
+import {
+  deepCopy,
+  getDepositosAdicionalesWithCodes,
+  getSalidasAdicionalesWithCodes,
+  uniqueArr,
+} from "./Utils/utils"
 import Split from "react-split"
-import { auxiliares, depositos, originalDepositos } from "../datamodel"
+import {
+  auxiliares,
+  depositos,
+  originalDepositos,
+  originalSalidas,
+  salidas,
+} from "../datamodel"
 
 const App = () => {
   const optionsString = localStorage.getItem("options")
@@ -24,7 +35,7 @@ const App = () => {
     }
 
     if (parsedOptions?.cuentasDepositos) {
-      const cuentasAdicionales = getAccountNamesWithCodes(
+      const cuentasAdicionales = getDepositosAdicionalesWithCodes(
         parsedOptions.cuentasDepositos,
       ).filter((v) => v !== "No disponible")
 
@@ -32,6 +43,14 @@ const App = () => {
         ...originalDepositos,
         ...cuentasAdicionales,
       ])
+    }
+
+    if (parsedOptions?.cuentasSalidas) {
+      const cuentasSalidas = getSalidasAdicionalesWithCodes(
+        parsedOptions.cuentasSalidas,
+      ).filter((v) => v !== "No disponible")
+
+      salidas.salidas = uniqueArr([...originalSalidas, ...cuentasSalidas])
     }
   }
 

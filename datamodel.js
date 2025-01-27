@@ -1690,7 +1690,9 @@ export const depositos = {
   depositos: ["CXP Farmacias", "CXP Otros", "Prestamo Bodega"],
 }
 
-export let salidas = ["CXC Otros", "CXC Bodega", "CXC Farmacias"]
+export const originalSalidas = ["CXC Otros", "CXC Bodega", "CXC Farmacias"]
+
+export let salidas = { salidas: ["CXC Otros", "CXC Bodega", "CXC Farmacias"] }
 
 export const cxc = [
   "CXC Otros",
