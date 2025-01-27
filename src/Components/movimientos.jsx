@@ -123,7 +123,7 @@ const LeftPanel = (props) => {
       <dialog id="my_modal_2" className="modal">
         <div className="modal-box w-11/12 max-w-5xl ">
           <h3 className="font-bold text-lg">Opciones</h3>
-          <Opciones props={props} />
+          <Opciones {...props} />
           <div className="modal-action">
             <form method="dialog">
               {/* if there is a button in form, it will close the modal */}

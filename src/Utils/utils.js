@@ -1,4 +1,20 @@
-import { auxiliares } from "../../datamodel"
+import { auxiliares, cuentasDepositos } from "../../datamodel"
+
+export function getAccountNamesWithCodes(str = "") {
+  const result = str.split(",")
+
+  if (result.length === 0) {
+    return []
+  }
+
+  return result.map((c) => {
+    return cuentasDepositos[c] || "No disponible"
+  })
+}
+
+export function uniqueArr(arr) {
+  return [...new Set(arr)]
+}
 
 export function getFaNumbers(str) {
   const regex = /\bfa(\d{2,3})/i // Match "fa" or "FA" followed by 2-3 digits and capture the digits
@@ -61,7 +77,6 @@ export const getCxpFaWithName = (name) => {
   const resultArr = faValues.filter(
     (v) => v.includes("Farmacias del Ahorro") && v.includes(name),
   )
-  console.log("resultarr: ", name)
   return resultArr.length > 0 ? resultArr[0] : ""
 }
 

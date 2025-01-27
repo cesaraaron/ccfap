@@ -5,17 +5,24 @@ import { auxiliares } from "../../datamodel"
 
 export default function OpcionesCXCEmp() {
   let defaultState = [{}]
+  let optionsState = {}
+
   const optionsString = localStorage.getItem("options")
 
   if (optionsString) {
     const optionsParsed = JSON.parse(optionsString)
 
-    if (optionsParsed && Array.isArray(optionsParsed.cxcEmpleados)) {
+    if (Array.isArray(optionsParsed?.cxcEmpleados)) {
       defaultState = optionsParsed.cxcEmpleados
+    }
+
+    if (optionsParsed) {
+      optionsState = optionsParsed
     }
   }
 
   const [state, setState] = useState(defaultState)
+  const [options] = useState(optionsState)
 
   const cellSelection = useMemo(() => {
     return {
@@ -75,7 +82,10 @@ export default function OpcionesCXCEmp() {
 
     if (isEmpty) {
       auxiliares["CXC Empleados"] = {}
-      localStorage.setItem("options", JSON.stringify({ cxcEmpleados: [] }))
+      localStorage.setItem(
+        "options",
+        JSON.stringify({ ...options, cxcEmpleados: [] }),
+      )
 
       return
     }
@@ -91,64 +101,59 @@ export default function OpcionesCXCEmp() {
     })
 
     auxiliares["CXC Empleados"] = obj
-    localStorage.setItem("options", JSON.stringify({ cxcEmpleados: arr }))
+    localStorage.setItem(
+      "options",
+      JSON.stringify({ ...options, cxcEmpleados: arr }),
+    )
   }
   return (
     <div>
-      <div className="collapse bg-base-200">
-        <input type="checkbox" />
-        <div className="collapse-title text-base">
-          Agregar codigos de empleados
-        </div>
-        <div className="collapse-content">
-          <div className="flex flex-col">
-            <div className="flex justify-end">
-              <div className="">
-                <button
-                  className="btn btn-xs btn-circle"
-                  onClick={() => {
-                    setState([...state, {}])
-                  }}
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-4 w-4"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M12 4v16m8-8H4"
-                    />
-                  </svg>
-                </button>
-              </div>
-            </div>
-            <div
-              className="ag-theme-quartz" // applying the Data Grid theme
-              style={{ height: "200px" }} // the Data Grid will fill the size of the parent container
+      <div className="flex flex-col">
+        <div className="flex justify-end">
+          <div className="">
+            <button
+              className="btn btn-xs btn-circle"
+              onClick={() => {
+                setState([...state, {}])
+              }}
             >
-              <AgGridReact
-                rowData={state}
-                columnDefs={colDefs}
-                rowHeight={35}
-                defaultColDef={defaultColDef}
-                cellSelection={cellSelection}
-                suppressMovableColumns={true}
-                onCellValueChanged={onCellValueChanged}
-                rowClassRules={rowClassRules}
-                tooltipShowDelay={200}
-                processDataFromClipboard={(p) =>
-                  processDataFromClipboard(p, (newRows) => {
-                    setState([...state, ...newRows])
-                  })
-                }
-              />
-            </div>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-4 w-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M12 4v16m8-8H4"
+                />
+              </svg>
+            </button>
           </div>
+        </div>
+        <div
+          className="ag-theme-quartz" // applying the Data Grid theme
+          style={{ height: "200px" }} // the Data Grid will fill the size of the parent container
+        >
+          <AgGridReact
+            rowData={state}
+            columnDefs={colDefs}
+            rowHeight={35}
+            defaultColDef={defaultColDef}
+            cellSelection={cellSelection}
+            suppressMovableColumns={true}
+            onCellValueChanged={onCellValueChanged}
+            rowClassRules={rowClassRules}
+            tooltipShowDelay={200}
+            processDataFromClipboard={(p) =>
+              processDataFromClipboard(p, (newRows) => {
+                setState([...state, ...newRows])
+              })
+            }
+          />
         </div>
       </div>
     </div>

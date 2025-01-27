@@ -40,7 +40,7 @@ export const filterInvalidDeposits = (data) => {
     }) => {
       if (!isValidDate(fecha)) return false
 
-      if (!depositos.includes(cuentaOrigen)) return false
+      if (!depositos.depositos.includes(cuentaOrigen)) return false
 
       const auxiliaresValues = Object.values(auxiliares[cuentaOrigen])
 

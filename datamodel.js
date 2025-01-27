@@ -1680,9 +1680,17 @@ export const bancos = {
   1051: "Banco Atlántida - FA Distribuidora de Fondos",
 }
 
-export const depositos = ["CXP Farmacias", "CXP Otros", "Prestamo Bodega"]
+export const originalDepositos = [
+  "CXP Farmacias",
+  "CXP Otros",
+  "Prestamo Bodega",
+]
 
-export const salidas = ["CXC Otros", "CXC Bodega", "CXC Farmacias"]
+export const depositos = {
+  depositos: ["CXP Farmacias", "CXP Otros", "Prestamo Bodega"],
+}
+
+export let salidas = ["CXC Otros", "CXC Bodega", "CXC Farmacias"]
 
 export const cxc = [
   "CXC Otros",
@@ -1701,3 +1709,22 @@ export const cxp = [
   "CXP Retenciones",
   "Prestamo Bodega",
 ]
+
+export const cuentasDepositos = {
+  7: "CXC Farmacias",
+  12: "CXC Control de Inventario",
+  13: "CXC Empleados",
+  16: "CXC Otros",
+  17: "CXC Bodega",
+  25: "CXC Retenciones",
+}
+
+export const cuentasSalidas = {
+  1: "CXP Proveedores",
+  2: "CXP Farmacias",
+  3: "CXP Bodega",
+  6: "Prestamo Bodega",
+  14: "CXP Otros",
+  22: "CXP Retenciones",
+  28: "Balance IVA",
+}

@@ -3,21 +3,17 @@ import Movimientos from "./Components/movimientos"
 import Visualizador from "./Components/visualizador"
 import { data } from "./Utils/dataShape"
 import { ActionButtons } from "./Components/actionButtons"
-import { deepCopy } from "./Utils/utils"
+import { deepCopy, getAccountNamesWithCodes, uniqueArr } from "./Utils/utils"
 import Split from "react-split"
-import { auxiliares } from "../datamodel"
+import { auxiliares, depositos, originalDepositos } from "../datamodel"
 
 const App = () => {
-  const [appData, setAppData] = useState(deepCopy(data))
-  const [llenado, setLlenado] = useState([{}])
-  const [showVisualizador, setShowVisualizador] = useState(false)
-
   const optionsString = localStorage.getItem("options")
 
   if (optionsString) {
     const parsedOptions = JSON.parse(optionsString)
 
-    if (Array.isArray(parsedOptions.cxcEmpleados)) {
+    if (Array.isArray(parsedOptions?.cxcEmpleados)) {
       const obj = {}
       parsedOptions.cxcEmpleados.forEach((item) => {
         if (item.codigo > 0 && /./.test(item.nombre)) {
@@ -26,7 +22,22 @@ const App = () => {
       })
       auxiliares["CXC Empleados"] = obj
     }
+
+    if (parsedOptions?.cuentasDepositos) {
+      const cuentasAdicionales = getAccountNamesWithCodes(
+        parsedOptions.cuentasDepositos,
+      ).filter((v) => v !== "No disponible")
+
+      depositos.depositos = uniqueArr([
+        ...originalDepositos,
+        ...cuentasAdicionales,
+      ])
+    }
   }
+
+  const [appData, setAppData] = useState(deepCopy(data))
+  const [llenado, setLlenado] = useState([{}])
+  const [showVisualizador, setShowVisualizador] = useState(false)
 
   return (
     <div>

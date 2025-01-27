@@ -6,8 +6,11 @@ import PropTypes from "prop-types"
 import { dataTypeDefinitions } from "../Utils/dataTypeDefs"
 import {
   generateId,
+  getFANameWithString,
+  hasFAInIt,
   objIsEmpty,
   processDataFromClipboard,
+  uniqueArr,
 } from "../Utils/utils"
 import {
   generateCreditosFA,
@@ -43,12 +46,14 @@ export default function Depositos({ appData, setAppData }) {
       headerName: "Cuenta Origen",
       field: "cuentaOrigen",
       cellEditor: "agRichSelectCellEditor",
-
-      cellEditorParams: {
-        values: depositos,
-        allowTyping: true,
-        filterList: true,
-        highlightMatch: true,
+      cellEditorParams: () => {
+        const dep = uniqueArr(depositos.depositos)
+        return {
+          values: dep,
+          allowTyping: true,
+          filterList: true,
+          highlightMatch: true,
+        }
       },
     },
     {
@@ -124,6 +129,24 @@ export default function Depositos({ appData, setAppData }) {
   )
 
   const onCellValueChanged = () => {
+    const hasCXCFA = depositos.depositos.includes("CXC Farmacias")
+
+    if (hasCXCFA) {
+      const newDepositos = appData.depositos.map((d) => {
+        if (!hasFAInIt(d.descripcion)) return d
+
+        const faName = getFANameWithString(d.descripcion)
+
+        return {
+          ...d,
+          cuentaOrigen: "CXC Farmacias",
+          subCuentaOrigen: faName,
+        }
+      })
+      setAppData({ ...appData, depositos: newDepositos })
+      return
+    }
+
     const newCreditosFA = generateCreditosFA(appData.depositos)
     const oldCreditosFA = appData.cambioscxc
     const updatedCreditosFA = syncCreditosFA(
