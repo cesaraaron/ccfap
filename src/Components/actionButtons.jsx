@@ -39,14 +39,17 @@ export const ActionButtons = ({ setAppData, appData }) => {
             return
           }
 
-          generateZip({
-            cambioscxp,
-            depositos,
-            cambioscxc,
-            liquidaciones,
-            salidas,
-            traslados,
-          })
+          generateZip(
+            {
+              cambioscxp,
+              depositos,
+              cambioscxc,
+              liquidaciones,
+              salidas,
+              traslados,
+            },
+            appData,
+          )
         }}
       >
         Generar excel
