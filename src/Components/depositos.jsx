@@ -6,7 +6,8 @@ import PropTypes from "prop-types"
 import { dataTypeDefinitions } from "../Utils/dataTypeDefs"
 import {
   generateId,
-  getFANameWithString,
+  getCXCFAWithFANumbers,
+  getFaNumbers,
   hasFAInIt,
   objIsEmpty,
   processDataFromClipboard,
@@ -136,16 +137,15 @@ export default function Depositos({ appData, setAppData }) {
       const newDepositos = appData.depositos.map((d) => {
         if (!hasFAInIt(d.descripcion)) return d
 
-        const faName = getFANameWithString(d.descripcion)
+        const faNumbers = getFaNumbers(d.descripcion)
 
         return {
           ...d,
           cuentaOrigen: "CXC Farmacias",
-          subCuentaOrigen: faName,
+          subCuentaOrigen: getCXCFAWithFANumbers(faNumbers),
         }
       })
       setAppData({ ...appData, depositos: newDepositos })
-      return
     }
 
     const newCreditosFA = generateCreditosFA(appData.depositos)
@@ -155,7 +155,10 @@ export default function Depositos({ appData, setAppData }) {
       newCreditosFA,
       appData.depositos,
     )
-    setAppData({ ...appData, cambioscxc: [...updatedCreditosFA] })
+
+    if (!hasCXCFA) {
+      setAppData({ ...appData, cambioscxc: [...updatedCreditosFA] })
+    }
   }
 
   const statusBar = useMemo(() => {
@@ -233,6 +236,7 @@ export default function Depositos({ appData, setAppData }) {
           statusBar={statusBar}
           tooltipShowDelay={200}
           rowClassRules={rowClassRules}
+          suppressScrollOnNewData={true}
           processDataFromClipboard={(p) =>
             processDataFromClipboard(p, (newRows) => {
               setAppData({

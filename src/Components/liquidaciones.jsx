@@ -264,6 +264,7 @@ export default function Liquidaciones({ appData, setAppData }) {
           statusBar={statusBar}
           rowClassRules={rowClassRules}
           onCellValueChanged={onCellValueChanged}
+          suppressScrollOnNewData={true}
           processDataFromClipboard={(p) =>
             processDataFromClipboard(p, (newRows) => {
               setAppData({

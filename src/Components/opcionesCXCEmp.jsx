@@ -136,7 +136,7 @@ export default function OpcionesCXCEmp() {
         </div>
         <div
           className="ag-theme-quartz" // applying the Data Grid theme
-          style={{ height: "200px" }} // the Data Grid will fill the size of the parent container
+          style={{ height: "400px" }} // the Data Grid will fill the size of the parent container
         >
           <AgGridReact
             rowData={state}

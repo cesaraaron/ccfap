@@ -164,12 +164,12 @@ export const getFAString = (str = "") => {
   return match.length > 0 ? match[0] : null
 }
 
-export const getFANameWithString = (str) => {
-  const faNumbers = getFaNumbers(str)
-
-  if (faNumbers === null) return null
-
-  return "Farmacias Del Ahorro " + faNumbers
+export const getCXCFAWithFANumbers = (name) => {
+  const faValues = Object.values(auxiliares["CXC Farmacias"])
+  const resultArr = faValues.filter(
+    (v) => v.includes("Farmacias Del Ahorro") && v.includes(name),
+  )
+  return resultArr.length > 0 ? resultArr[0] : ""
 }
 
 export const processDataFromClipboard = (params, updateState) => {
