@@ -26,7 +26,7 @@ export const generateCreditosFA = (data) => {
   filteredData.forEach((d) => {
     if (!hasFAInIt(d.descripcion)) return
 
-    const faName = getCXCFAWithFANumbers(d.descripcion)
+    const faName = getCXCFAWithFANumbers(getFaNumbers(d.descripcion))
 
     mappedValues.push({
       id: d.id,

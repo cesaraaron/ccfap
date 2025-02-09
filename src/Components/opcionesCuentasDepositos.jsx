@@ -21,14 +21,6 @@ export default function CuentasDepositos() {
 
   const [state, setState] = useState(defaultState)
 
-  const cellSelection = useMemo(() => {
-    return {
-      handle: {
-        mode: "fill",
-      },
-    }
-  }, [])
-
   const [colDefs] = useState([
     {
       headerName: "Codigos separados por comas",
@@ -101,7 +93,6 @@ export default function CuentasDepositos() {
             columnDefs={colDefs}
             rowHeight={35}
             defaultColDef={defaultColDef}
-            cellSelection={cellSelection}
             suppressMovableColumns={true}
             onCellValueChanged={onCellValueChanged}
             tooltipShowDelay={200}

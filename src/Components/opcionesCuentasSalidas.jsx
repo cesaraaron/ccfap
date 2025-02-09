@@ -21,14 +21,6 @@ export default function CuentasSalidas() {
 
   const [state, setState] = useState(defaultState)
 
-  const cellSelection = useMemo(() => {
-    return {
-      handle: {
-        mode: "fill",
-      },
-    }
-  }, [])
-
   const [colDefs] = useState([
     {
       headerName: "Codigos separados por comas",
@@ -102,7 +94,6 @@ export default function CuentasSalidas() {
             columnDefs={colDefs}
             rowHeight={35}
             defaultColDef={defaultColDef}
-            cellSelection={cellSelection}
             suppressMovableColumns={true}
             onCellValueChanged={onCellValueChanged}
             tooltipShowDelay={200}

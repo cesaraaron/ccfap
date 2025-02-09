@@ -130,7 +130,6 @@ export default function Depositos({ appData, setAppData }) {
   )
 
   const onCellValueChanged = (p) => {
-    console.log("onCellValueChanged", p)
     const hasCXCFA = depositos.depositos.includes("CXC Farmacias")
 
     if (hasCXCFA && hasFAInIt(p.newValue)) {
